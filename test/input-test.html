@@ -17,15 +17,15 @@
   </test-fixture>
 
   <script>
-    describe('sample test', function() {
+    describe('input test', function() {
       var element;
 
       beforeEach(function() {
-        element = fixture('default');
+        timePicker = fixture('default');
       });
 
       it('should pass', function() {
-        expect(element.localName).to.be.equal('vaadin-time-picker');
+        expect(timePicker.localName).to.be.equal('vaadin-time-picker');
       });
 
       it('should not expose class name globally', function() {
