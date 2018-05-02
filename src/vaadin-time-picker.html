@@ -20,7 +20,9 @@ This program is available under Apache License Version 2.0, available at https:/
         display: none !important;
       }
     </style>
-    <vaadin-time-picker-text-field>
+    <vaadin-time-picker-text-field
+      value="[[value]]"
+    >
       <slot name="prefix" slot="prefix"></slot>
       <slot name="suffix" slot="suffix"></slot>
     </vaadin-time-picker-text-field>
@@ -49,7 +51,47 @@ This program is available under Apache License Version 2.0, available at https:/
 
         static get properties() {
           return {
+            /**
+             * The value for this element.
+             *
+             * Supported time formats:
+             * - ISO 8601 `"hh:mm"` (default)
+             *
+             * @type {String}
+             */
+            value: {
+              type: String,
+              notify: true
+            }
           };
+        }
+
+        ready() {
+          super.ready();
+          this._boundSetValue = this._setValue.bind(this);
+          this._bindListeners();
+        }
+
+        _bindListeners() {
+          this._inputElement.addEventListener('change', this._boundSetValue);
+        }
+
+        _setValue(e) {
+          this.value = this._inputElement.value = this._parseTime(this._inputElement.value);
+        }
+
+        _parseTime(str) {
+          // Parsing with RegExp to ensure correct format
+          const parts = /^(\d{2}):(\d{2})$/.exec(str);
+          if (!parts) {
+            return this.value;
+          }
+
+          return [parts[1], parts[2]].join(':');
+        }
+
+        get _inputElement() {
+          return this.shadowRoot.querySelector('vaadin-time-picker-text-field');
         }
       }
 

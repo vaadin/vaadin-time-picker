@@ -18,12 +18,11 @@
 
   <script>
     describe('input test', function() {
-      var timePicker, timePickerTextField, nativeInput;
+      var timePicker, timePickerTextField;
 
       beforeEach(function() {
         timePicker = fixture('default');
         timePickerTextField = timePicker.shadowRoot.querySelector('vaadin-time-picker-text-field');
-        nativeInput = timePickerTextField.shadowRoot.querySelector('input');
       });
 
       it('vaadin-time-picker-text-field should exist', function() {
