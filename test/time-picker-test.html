@@ -1,0 +1,63 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-time-picker tests</title>
+  <script src='../../web-component-tester/browser.js'></script>
+  <script src='../../webcomponentsjs/webcomponents-lite.js'></script>
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../src/vaadin-time-picker.html">
+</head>
+
+<body>
+  <test-fixture id="default">
+    <template>
+      <vaadin-time-picker></vaadin-time-picker>
+    </template>
+  </test-fixture>
+
+  <script>
+    describe('input test', function() {
+      var timePicker, timePickerTextField, nativeInput;
+
+      beforeEach(function() {
+        timePicker = fixture('default');
+        timePickerTextField = timePicker.shadowRoot.querySelector('vaadin-time-picker-text-field');
+        nativeInput = timePickerTextField.shadowRoot.querySelector('input');
+      });
+
+      it('vaadin-time-picker-text-field should exist', function() {
+        expect(timePickerTextField.localName).to.be.equal('vaadin-time-picker-text-field');
+      });
+
+      it('value property should be undefined by default', function() {
+        expect(timePicker.value).to.be.equal(undefined);
+      });
+
+      it('should not set value if the format is invalid', function() {
+        timePickerTextField.value = 'invalid';
+        timePickerTextField.dispatchEvent(new CustomEvent('change'));
+        expect(timePicker.value).to.be.equal(undefined);
+      });
+
+      it('should set values of inputElement and time-picker if the format is valid', function() {
+        timePickerTextField.value = '12:00';
+        timePickerTextField.dispatchEvent(new CustomEvent('change'));
+        expect(timePicker.value).to.be.equal('12:00');
+        expect(timePickerTextField.value).to.be.equal('12:00');
+      });
+
+      it('should propagate value to the inputElement', function() {
+        timePicker.value = '12:00';
+        expect(timePickerTextField.value).to.be.equal('12:00');
+      });
+
+      it('should restore the previous value if the format is invalid', function() {
+        timePicker.value = '12:00';
+        timePickerTextField.value = 'invalid';
+        timePickerTextField.dispatchEvent(new CustomEvent('change'));
+        expect(timePicker.value).to.be.equal('12:00');
+      });
+    });
+  </script>
+</body>
