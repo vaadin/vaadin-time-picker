@@ -26,6 +26,7 @@
     "polymer": "^2.0.0",
     "vaadin-themable-mixin": "vaadin/vaadin-themable-mixin#p3-preview",
     "vaadin-element-mixin": "vaadin/vaadin-element-mixin#p3-preview",
+    "vaadin-lumo-styles": "vaadin/vaadin-lumo-styles#p3-preview",
     "vaadin-text-field": "vaadin/vaadin-text-field#p3-preview"
   },
   "devDependencies": {
@@ -33,6 +34,7 @@
     "iron-demo-helpers": "^2.0.0",
     "webcomponentsjs": "^1.0.0",
     "web-component-tester": "^6.1.5",
+    "test-fixture": "^3.0.0",
     "vaadin-demo-helpers": "vaadin/vaadin-demo-helpers#p3-preview"
   }
 }
