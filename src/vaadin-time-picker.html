@@ -21,10 +21,8 @@ This program is available under Apache License Version 2.0, available at https:/
       }
     </style>
     <vaadin-time-picker-text-field
-      value="[[value]]"
+      value="{{value}}"
     >
-      <slot name="prefix" slot="prefix"></slot>
-      <slot name="suffix" slot="suffix"></slot>
     </vaadin-time-picker-text-field>
   </template>
 
@@ -61,30 +59,55 @@ This program is available under Apache License Version 2.0, available at https:/
              */
             value: {
               type: String,
-              notify: true
+              observer: '_valueChanged',
+              notify: true,
+              value: ''
+            },
+
+            _previousValue: {
+              type: String,
+              value: ''
             }
           };
         }
 
         ready() {
           super.ready();
-          this._boundSetValue = this._setValue.bind(this);
+          this._boundOnChange = this._onChange.bind(this);
           this._bindListeners();
         }
 
         _bindListeners() {
-          this._inputElement.addEventListener('change', this._boundSetValue);
+          this._inputElement.addEventListener('change', this._boundOnChange);
         }
 
-        _setValue(e) {
-          this.value = this._inputElement.value = this._parseTime(this._inputElement.value);
+        _valueChanged(value, oldValue) {
+          if (this._inputElement.hasAttribute('focused')) {
+            return;
+          } else {
+            this._setValue();
+          }
+        }
+
+        _onChange(e) {
+          this._setValue();
+        }
+
+        _setValue() {
+          const newValue = this._parseTime(this._inputElement.value);
+          if (newValue) {
+            this.value = this._previousValue = newValue;
+          } else {
+            this.value = this._previousValue;
+          }
         }
 
         _parseTime(str) {
           // Parsing with RegExp to ensure correct format
-          const parts = /^(\d{2}):(\d{2})$/.exec(str);
+          const separator = ':';
+          const parts = new RegExp(`^(\\d{2})${separator}(\\d{2})$`).exec(str);
           if (!parts) {
-            return this.value;
+            return;
           }
 
           return [parts[1], parts[2]].join(':');
