@@ -20,9 +20,7 @@ This program is available under Apache License Version 2.0, available at https:/
         display: none !important;
       }
     </style>
-    <vaadin-time-picker-text-field
-      value="{{value}}"
-    >
+    <vaadin-time-picker-text-field>
     </vaadin-time-picker-text-field>
   </template>
 
@@ -94,11 +92,12 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _setValue() {
-          const newValue = this._parseTime(this._inputElement.value);
+          const checkedValue = this.value || this._inputElement.value;
+          const newValue = this._parseTime(checkedValue);
           if (newValue) {
-            this.value = this._previousValue = newValue;
+            this.value = this._inputElement.value = this._previousValue = newValue;
           } else {
-            this.value = this._previousValue;
+            this.value = this._inputElement.value = this._previousValue;
           }
         }
 
