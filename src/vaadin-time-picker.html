@@ -83,16 +83,15 @@ This program is available under Apache License Version 2.0, available at https:/
           if (this._inputElement.hasAttribute('focused')) {
             return;
           } else {
-            this._setValue();
+            this._setValue(value);
           }
         }
 
         _onChange(e) {
-          this._setValue();
+          this._setValue(this._inputElement.value);
         }
 
-        _setValue() {
-          const checkedValue = this.value || this._inputElement.value;
+        _setValue(checkedValue) {
           const newValue = this._parseTime(checkedValue);
           if (newValue) {
             this.value = this._inputElement.value = this._previousValue = newValue;
