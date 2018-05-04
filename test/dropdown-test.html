@@ -1,0 +1,59 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-time-picker tests</title>
+  <script src='../../web-component-tester/browser.js'></script>
+  <script src='../../webcomponentsjs/webcomponents-lite.js'></script>
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+  <link rel="import" href="../src/vaadin-time-picker.html">
+</head>
+
+<body>
+  <test-fixture id="default">
+    <template>
+      <vaadin-time-picker></vaadin-time-picker>
+    </template>
+  </test-fixture>
+
+  <script>
+    describe('dropdown test', function() {
+      let timePicker, comboBoxLight;
+
+      beforeEach(function() {
+        timePicker = fixture('default');
+        comboBoxLight = timePicker.shadowRoot.querySelector('vaadin-combo-box-light');
+      });
+
+      it('vaadin-combo-box-light should exist', function() {
+        expect(comboBoxLight.localName).to.be.equal('vaadin-combo-box-light');
+      });
+
+      it('vaadin-combo-box-light should have an hour array as filteredItems by default', function() {
+        expect(comboBoxLight.filteredItems.length).to.be.equal(24);
+        // With default step 1, value should be set to `hh:00:00`
+        for (var i = 0; i < 24; i ++) {
+          const expectedLabel = (i < 10) ? `0${i}` : `${i}`;
+          expect(comboBoxLight.filteredItems[i].label).to.be.equal(expectedLabel);
+          expect(comboBoxLight.filteredItems[i].value).to.be.equal(`${expectedLabel}:00:00`);
+        }
+      });
+
+      it('should be possible to select value via combo-box-light', function() {
+        comboBoxLight.selectedItem = comboBoxLight.filteredItems[1];
+        expect(timePicker.value).to.be.equal('01:00:00');
+      });
+
+      it('on step change the resolution should be changed, but selectedItem should remain the same', function() {
+        comboBoxLight.selectedItem = comboBoxLight.filteredItems[1];
+        expect(timePicker.value).to.be.equal('01:00:00');
+        timePicker.step = 0.5;
+        expect(timePicker.value).to.be.equal('01:00:00.000');
+        expect(comboBoxLight.selectedItem).to.be.equal(comboBoxLight.filteredItems[1]);
+        timePicker.step = 60;
+        expect(timePicker.value).to.be.equal('01:00');
+        expect(comboBoxLight.selectedItem).to.be.equal(comboBoxLight.filteredItems[1]);
+      });
+    });
+  </script>
+</body>
