@@ -80,11 +80,7 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _valueChanged(value, oldValue) {
-          if (this._inputElement.hasAttribute('focused')) {
-            return;
-          } else {
-            this._setValue(value);
-          }
+          this._setValue(value);
         }
 
         _onChange(e) {
@@ -102,8 +98,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
         _parseTime(str) {
           // Parsing with RegExp to ensure correct format
-          const separator = ':';
-          const parts = new RegExp(`^(\\d{2})${separator}(\\d{2})$`).exec(str);
+          const parts = /^(\d{2})(?::(\d{2}))?(?::(\d{2}))?(?:\.(\d{3}))?$/.exec(str);
           if (!parts) {
             return;
           }
