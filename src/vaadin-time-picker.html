@@ -88,8 +88,18 @@ This program is available under Apache License Version 2.0, available at https:/
 
             _dropdownItems: {
               type: Array
-            }
+            },
+
+            formatTime: Object,
+
+            parseTime: Object
           };
+        }
+
+        static get observers() {
+          return [
+            '_updateDropdownItems(formatTime, parseTime, step)'
+          ];
         }
 
         ready() {
@@ -97,6 +107,12 @@ This program is available under Apache License Version 2.0, available at https:/
           this._boundOnChange = this._onChange.bind(this);
           this._bindListeners();
           this._dropdownItems = this._generateDropdownList();
+        }
+
+        _updateDropdownItems() {
+          this.dropdownItems = this._generateDropdownList();
+          // Need to update selected item after regenerating of the list
+          this._dropdownElement.selectedItem = this.dropdownItems.filter(item => item.value === this.value)[0];
         }
 
         _bindListeners() {
@@ -148,6 +164,11 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _parseTime(str) {
+          const customParsed = this.parseTime && this.parseTime(str);
+          if (customParsed) {
+            return customParsed;
+          }
+
           // Parsing with RegExp to ensure correct format
           const parts = /^(\d{2})(?::(\d{2}))?(?::(\d{2}))?(?:\.(\d{3}))?$/.exec(str);
           if (!parts) {
@@ -160,6 +181,11 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         _formatTime(time) {
+          const customFormated = this.formatTime && this.formatTime(time);
+          if (customFormated) {
+            return customFormated;
+          }
+
           if (!time) {
             return;
           }
