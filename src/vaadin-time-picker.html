@@ -26,7 +26,7 @@ This program is available under Apache License Version 2.0, available at https:/
         cursor: pointer;
       }
     </style>
-    <vaadin-combo-box-light allow-custom-value item-label-path="value" value="{{value}}" filtered-items="[[dropdownItems]]">
+    <vaadin-combo-box-light allow-custom-value item-label-path="value" value="{{value}}" filtered-items="[[_dropdownItems]]">
       <template>
         [[item.label]]
       </template>
@@ -86,7 +86,7 @@ This program is available under Apache License Version 2.0, available at https:/
               observer: '_stepChanged'
             },
 
-            dropdownItems: {
+            _dropdownItems: {
               type: Array
             }
           };
@@ -96,7 +96,7 @@ This program is available under Apache License Version 2.0, available at https:/
           super.ready();
           this._boundOnChange = this._onChange.bind(this);
           this._bindListeners();
-          this.dropdownItems = this._generateDropdownList();
+          this._dropdownItems = this._generateDropdownList();
         }
 
         _bindListeners() {
@@ -184,9 +184,9 @@ This program is available under Apache License Version 2.0, available at https:/
           }
 
           this._setValue(this.value);
-          this.dropdownItems = this._generateDropdownList();
+          this._dropdownItems = this._generateDropdownList();
           // Need to update selected item after regenerating of the list
-          this._dropdownElement.selectedItem = this.dropdownItems.filter(item => item.value === this.value)[0];
+          this._dropdownElement.selectedItem = this._dropdownItems.filter(item => item.value === this.value)[0];
         }
 
         get _inputElement() {
