@@ -38,11 +38,6 @@
         }
       });
 
-      it('should be possible to select value via combo-box-light', () => {
-        timePicker._dropdownElement.selectedItem = timePicker._dropdownElement.filteredItems[1];
-        expect(timePicker.value).to.be.equal('01:00');
-      });
-
       it('undefined step divides dropdown on one hour increments', () => {
         timePicker._dropdownElement.step = undefined;
         expect(timePicker._dropdownElement.filteredItems.length).to.be.equal(24);
@@ -81,7 +76,7 @@
       });
 
       it('on step change the resolution should be changed, but selectedItem should remain the same', () => {
-        timePicker._dropdownElement.selectedItem = timePicker._dropdownElement.filteredItems[1];
+        timePicker.value = '01:00';
         expect(timePicker.value).to.be.equal('01:00');
         timePicker.step = 0.5;
         expect(timePicker.value).to.be.equal('01:00:00.000');
