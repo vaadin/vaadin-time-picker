@@ -211,8 +211,8 @@ This program is available under Apache License Version 2.0, available at https:/
         __valueChanged(value, oldValue) {
           const parsedObj = this.__parseISO(value) || '';
 
-          const valueFromOld = this.__parseISO(oldValue) || '';
-          const valueFromCurrent = this.__formatISO(this.__parseISO(value)) || '';
+          const valueFromCurrent = this.__formatISO(parsedObj) || '';
+          const valueFromOld = this.__formatISO(this.__parseISO(oldValue)) || '';
 
           if (this.value !== '' && parsedObj === '') {
             this.value = valueFromOld;
