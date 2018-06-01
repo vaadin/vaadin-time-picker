@@ -10,7 +10,7 @@
     <h3>Plain Time Picker</h3>
     <vaadin-demo-snippet id="time-picker-basic-demos-plain-example">
       <template preserve-content>
-        <vaadin-time-picker></vaadin-time-picker>
+        <vaadin-time-picker label="Hour of arrival"></vaadin-time-picker>
       </template>
     </vaadin-demo-snippet>
 
@@ -21,14 +21,15 @@
     </p>
     <vaadin-demo-snippet id="time-picker-basic-demos-step-example">
       <template preserve-content>
-        <vaadin-time-picker step="0.5"></vaadin-time-picker>
+        <vaadin-time-picker step="0.5" placeholder="hh:mm:ss.fff" label="Set the video start point">
+        </vaadin-time-picker>
       </template>
     </vaadin-demo-snippet>
 
     <h3>Custom Parser And Formatter</h3>
     <vaadin-demo-snippet id="time-picker-basic-demos-format-parse-example">
       <template preserve-content>
-        <vaadin-time-picker></vaadin-time-picker>
+        <vaadin-time-picker label="Hour of arrival"></vaadin-time-picker>
         <script>
           window.addDemoReadyListener('#time-picker-basic-demos-format-parse-example', function(document) {
             const timePicker = document.querySelector('vaadin-time-picker');
