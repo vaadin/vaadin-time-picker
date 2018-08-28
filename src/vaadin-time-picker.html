@@ -10,6 +10,7 @@ This program is available under Apache License Version 2.0, available at https:/
 <link rel="import" href="../../vaadin-combo-box/src/vaadin-combo-box-light.html">
 <link rel="import" href="../../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
 <link rel="import" href="vaadin-time-picker-text-field.html">
+<script src="../../moment/min/moment-with-locales.js"></script>
 
 <dom-module id="vaadin-time-picker">
   <template>
@@ -204,6 +205,11 @@ This program is available under Apache License Version 2.0, available at https:/
 
             __dropdownItems: {
               type: Array
+            },
+
+            locale: {
+                type: String,
+                observer: '__localeChanged'
             },
 
             /**
@@ -470,6 +476,25 @@ This program is available under Apache License Version 2.0, available at https:/
           this.__updateDropdownItems();
           const parsedObj = this.__validateTime(this.__parseISO(this.value));
           this.__updateValue(parsedObj);
+        }
+
+        __localeChanged(newLocale) {
+            var _this = this;
+            this.i18n.formatTime = function (timeObject) {
+                if (timeObject) {
+                    let time = moment(timeObject.hours + ":" + timeObject.minutes, "LT");
+                    return time.locale(_this.locale).format("LT");
+                }
+            }
+
+            this.i18n.parseTime = function (input) {
+                let time = moment(input, "LT", _this.locale);
+                if (time.isValid()) {
+                    return {hours: time.hour(), minutes: time.minutes()};
+                }
+            }
+            this.__updateDropdownItems();
+            this.__updateInputValue(this.__validateTime(this.__parseISO(this.value)));
         }
 
         get __inputElement() {

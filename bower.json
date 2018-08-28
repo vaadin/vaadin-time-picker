@@ -34,7 +34,8 @@
     "vaadin-material-styles": "vaadin/vaadin-material-styles#^1.1.1",
     "vaadin-text-field": "vaadin/vaadin-text-field#^2.1.1",
     "vaadin-combo-box": "vaadin/vaadin-combo-box#^4.1.0",
-    "vaadin-control-state-mixin": "vaadin/vaadin-control-state-mixin#^2.1.1"
+    "vaadin-control-state-mixin": "vaadin/vaadin-control-state-mixin#^2.1.1",
+    "moment": "^2.22.2"
   },
   "devDependencies": {
     "iron-component-page": "^3.0.0",
