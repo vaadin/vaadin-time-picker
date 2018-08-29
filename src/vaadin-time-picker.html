@@ -478,19 +478,36 @@ This program is available under Apache License Version 2.0, available at https:/
           this.__updateValue(parsedObj);
         }
 
+        __localeFormat(step) {
+            if (step < 1) {
+                return 'LTS.SSS';
+            } else if (step < 60) {
+                return 'LTS';
+            } else {
+                return 'LT';
+            }
+        }
+
         __localeChanged(newLocale) {
             var _this = this;
             this.i18n.formatTime = function (timeObject) {
                 if (timeObject) {
-                    let time = moment(timeObject.hours + ":" + timeObject.minutes, "LT");
-                    return time.locale(_this.locale).format("LT");
+                    let format = _this.__localeFormat(_this.step);
+                    let time = moment().toDate();
+
+                    time.setHours(timeObject.hours);
+                    time.setMinutes(timeObject.minutes);
+                    time.setSeconds(timeObject.seconds);
+                    time.setMilliseconds(timeObject.milliseconds);
+                    return moment(time).locale(_this.locale).format(format);
                 }
             }
 
             this.i18n.parseTime = function (input) {
-                let time = moment(input, "LT", _this.locale);
+                let format = _this.__localeFormat(_this.step);
+                let time = moment(input, format, _this.locale);
                 if (time.isValid()) {
-                    return {hours: time.hour(), minutes: time.minutes()};
+                    return {hours: time.hour(), minutes: time.minute(), seconds: time.second(), milliseconds: time.millisecond()};
                 }
             }
             this.__updateDropdownItems();

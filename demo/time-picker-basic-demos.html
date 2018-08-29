@@ -44,6 +44,28 @@
     <vaadin-demo-snippet id="time-picker-basic-demos-step-example">
       <template preserve-content>
         <vaadin-time-picker step="0.5" label="Duration (hh:mm:ss.fff)"></vaadin-time-picker>
+        <vaadin-combo-box id="locale-select-step" label="Locale"></vaadin-combo-box>
+          <script>
+              window.addDemoReadyListener('#time-picker-basic-demos-step-example', function(document) {
+                  const timePicker = document.querySelector('vaadin-time-picker');
+
+                  const combobox = document.querySelector('#locale-select-step');
+
+                  combobox.items = [
+                      {label: 'Arabic (Saudi Arabia)', value: "ar-sa"},
+                      {label: 'Bengali', value: "bn"},
+                      {label: 'English (United Kingdom)', value: "en-gb"},
+                      {label: 'English (United States)', value: "en-us"},
+                      {label: 'German', value: "de"},
+                      {label: 'Finland', value: "fi"}
+                  ];
+
+                  combobox.addEventListener('value-changed', function() {
+                      timePicker.locale = combobox.value;
+                  });
+                  combobox.value = "en-us";
+              });
+          </script>
       </template>
     </vaadin-demo-snippet>
 
