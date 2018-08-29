@@ -497,8 +497,8 @@ This program is available under Apache License Version 2.0, available at https:/
 
                     time.setHours(timeObject.hours);
                     time.setMinutes(timeObject.minutes);
-                    time.setSeconds(timeObject.seconds);
-                    time.setMilliseconds(timeObject.milliseconds);
+                    time.setSeconds(timeObject.seconds || 0);
+                    time.setMilliseconds(timeObject.milliseconds || 0);
                     return moment(time).locale(_this.locale).format(format);
                 }
             }
