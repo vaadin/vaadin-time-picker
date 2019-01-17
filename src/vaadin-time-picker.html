@@ -548,7 +548,6 @@ This program is available under Apache License Version 2.0, available at https:/
          * Converts ISO format (HH:MM:ss.ff) to seconds.
          */
         __getSeconds(time) {
-          const step = this.step || 3600;
           const tmp = time.split(':');
           var value = tmp[0] * 60 * 60 + tmp[1] * 60;
           if (tmp.length == 3) {
