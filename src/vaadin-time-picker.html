@@ -488,9 +488,9 @@ This program is available under Apache License Version 2.0, available at https:/
                 const parsedLimit = this.i18n.parseTime(this.max);
                 this.__dropdownElement.value = this.i18n.formatTime(parsedLimit) || '';
               }
-          } else {
-            this.__updateValue(parsedObj);
-          }
+            } else {
+              this.__updateValue(parsedObj);
+            }
           } else if (this.__dropdownElement.value === '') {
             this.value = '';
           }
