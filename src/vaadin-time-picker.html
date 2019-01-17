@@ -57,8 +57,8 @@ This program is available under Apache License Version 2.0, available at https:/
           readonly="[[readonly]]"
           role="application"
           aria-live="assertive"
-	  min$="[[min]]"
-	  max$="[[max]]"
+          min$="[[min]]"
+          max$="[[max]]"
           aria-label$="[[label]]"
           theme$="[[theme]]">
         <span slot="suffix" part="toggle-button" role="button" aria-label$="[[i18n.selector]]"></span>
@@ -89,7 +89,7 @@ This program is available under Apache License Version 2.0, available at https:/
        * ----------------|----------------
        * `toggle-button` | The toggle button
        *
-       * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
+       * See [ThemableMixin â€“ how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
        *
        * The following state attributes are available for styling:
        *
@@ -469,27 +469,28 @@ This program is available under Apache License Version 2.0, available at https:/
           }
         }
 
+
         __onInputChange(e) {
           const parsedObj = this.i18n.parseTime(this.__dropdownElement.value);
           const newValue = this.i18n.formatTime(parsedObj) || '';
           const lowerLimit = this.__getSeconds(this.min);
           const upperLimit = this.__getSeconds(this.max);
-	  const rawValue = this.__getSeconds(newValue);
+          const rawValue = this.__getSeconds(newValue);
 
           if (parsedObj) {
-            if (this.__dropdownElement.value !== newValue &&
-	      rawValue >= lowerLimit && rawValue <= upperLimit)
-            {
-              this.__dropdownElement.value = newValue;
-            } else if (rawValue < lowerLimit) { 
-              const parsedLimit = this.i18n.parseTime(this.min);
-              this.__dropdownElement.value = this.i18n.formatTime(parsedLimit) || '';
-            } else if (rawValue > upperLimit) { 
-              const parsedLimit = this.i18n.parseTime(this.max);
-              this.__dropdownElement.value = this.i18n.formatTime(parsedLimit) || '';
-            } else {
-              this.__updateValue(parsedObj);
-            }
+            if (this.__dropdownElement.value !== newValue) {
+              if (rawValue >= lowerLimit && rawValue <= upperLimit) {
+                this.__dropdownElement.value = newValue;
+              } else if (rawValue < lowerLimit) {
+                const parsedLimit = this.i18n.parseTime(this.min);
+                this.__dropdownElement.value = this.i18n.formatTime(parsedLimit) || '';
+              } else if (rawValue > upperLimit) {
+                const parsedLimit = this.i18n.parseTime(this.max);
+                this.__dropdownElement.value = this.i18n.formatTime(parsedLimit) || '';
+              }
+          } else {
+            this.__updateValue(parsedObj);
+          }
           } else if (this.__dropdownElement.value === '') {
             this.value = '';
           }
@@ -542,7 +543,7 @@ This program is available under Apache License Version 2.0, available at https:/
           // The default i18n parser implementation is ISO 8601 compliant
           return TimePickerElement.properties.i18n.value().parseTime(text);
         }
-        
+
         /**
          * Converts ISO format (HH:MM:ss.ff) to seconds.
          */
@@ -550,10 +551,10 @@ This program is available under Apache License Version 2.0, available at https:/
           const step = this.step || 3600;
           const tmp = time.split(':');
           var value = tmp[0] * 60 * 60 + tmp[1] * 60;
-	  if (tmp.length == 3) {
+          if (tmp.length == 3) {
             value += tmp[2];
           }
-	  return value;
+          return value;
         }
 
         __stepChanged(step) {
