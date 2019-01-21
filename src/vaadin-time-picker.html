@@ -239,7 +239,7 @@ This program is available under Apache License Version 2.0, available at https:/
              */
             min: {
               type: String,
-              value: '00:00:00.000'
+              value: '00:00:00.000',
             },
 
             /**
@@ -252,7 +252,7 @@ This program is available under Apache License Version 2.0, available at https:/
              */
             max: {
               type: String,
-              value: '23:59:59.999'
+              value: '23:59:59.999',
             },
 
             /**
@@ -351,7 +351,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
         static get observers() {
           return [
-            '__updateDropdownItems(i18n.*)'
+            '__updateDropdownItems(i18n.*, min, max)'
           ];
         }
 
