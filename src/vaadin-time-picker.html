@@ -89,7 +89,7 @@ This program is available under Apache License Version 2.0, available at https:/
        * ----------------|----------------
        * `toggle-button` | The toggle button
        *
-       * See [ThemableMixin â€“ how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
+       * See [ThemableMixin - how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
        *
        * The following state attributes are available for styling:
        *
@@ -465,7 +465,19 @@ This program is available under Apache License Version 2.0, available at https:/
           } else if (this.value !== newValue) {
             this.value = newValue;
           } else {
-            this.__updateInputValue(parsedObj);
+            const lowerLimit = this.__getSeconds(this.min);
+            const upperLimit = this.__getSeconds(this.max);
+            const rawValue = this.__getSeconds(newValue);
+
+            if (value >= lowerLimit && rawValue <= upperLimit) {
+              this.__updateInputValue(parsedObj);
+            } else if (rawValue < lowerLimit) {
+              const parsedLimit = this.i18n.parseTime(this.min);
+              this.__updateInputValue(parsedLimit);
+            } else if (rawValue > upperLimit) {
+              const parsedLimit = this.i18n.parseTime(this.max);
+              this.__updateInputValue(parsedLimit);
+            }
           }
         }
 
