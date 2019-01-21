@@ -234,12 +234,14 @@ This program is available under Apache License Version 2.0, available at https:/
              */
             min: {
               type: String,
-              value: '00:00:00.000'
+              value: '00:00:00.000',
+              observer: '__minChanged'
             },
 
             max: {
               type: String,
-              value: '23:59:59.999'
+              value: '23:59:59.999',
+              observer: '__maxChanged'
             },
 
             /**
@@ -572,6 +574,15 @@ This program is available under Apache License Version 2.0, available at https:/
           this.__updateDropdownItems();
           const parsedObj = this.__validateTime(this.__parseISO(this.value));
           this.__updateValue(parsedObj);
+        }
+
+        __minChanged(value) {
+          this.min = value;
+          this.__generateDropdownList();
+        }
+        __maxChanged(value) {
+          this.max = value;
+          this.__generateDropdownList();
         }
 
         get __inputElement() {
