@@ -578,11 +578,33 @@ This program is available under Apache License Version 2.0, available at https:/
 
         __minChanged(value) {
           this.min = value;
+          const lowerLimit = this.__getSeconds(this.min);
+          const upperLimit = this.__getSeconds(this.max);
+          const rawValue = this.__getSeconds(this.value);
+
+          if (rawValue < lowerLimit) {
+            const parsedLimit = this.i18n.parseTime(this.min);
+            this.__updateInputValue(parsedLimit);
+          } else if (rawValue > upperLimit) {
+            const parsedLimit = this.i18n.parseTime(this.max);
+            this.__updateInputValue(parsedLimit);
+          }
           this.__generateDropdownList();
         }
 
         __maxChanged(value) {
           this.max = value;
+          const lowerLimit = this.__getSeconds(this.min);
+          const upperLimit = this.__getSeconds(this.max);
+          const rawValue = this.__getSeconds(this.value);
+
+          if (rawValue < lowerLimit) {
+            const parsedLimit = this.i18n.parseTime(this.min);
+            this.__updateInputValue(parsedLimit);
+          } else if (rawValue > upperLimit) {
+            const parsedLimit = this.i18n.parseTime(this.max);
+            this.__updateInputValue(parsedLimit);
+          }
           this.__generateDropdownList();
         }
 
