@@ -470,6 +470,8 @@ This program is available under Apache License Version 2.0, available at https:/
           const maxTimeObj = this.__validateTime(this.__parseISO(this.max));
           const maxSec = this.__getSec(maxTimeObj);
 
+          this.__adjustValue(minSec, maxSec, minTimeObj, maxTimeObj);
+
           let time = -step + minSec;
           while (time + step >= minSec && time + step <= maxSec) {
             const timeObj = this.__validateTime(this.__addStep(time * 1000, step));
@@ -483,6 +485,16 @@ This program is available under Apache License Version 2.0, available at https:/
           }
 
           return generatedList;
+        }
+
+        __adjustValue(minSec, maxSec, minTimeObj, maxTimeObj) {
+          const valSec = this.__getSec(this.__memoValue);
+
+          if (valSec < minSec) {
+            this.__updateValue(minTimeObj);
+          } else if (valSec > maxSec) {
+            this.__updateValue(maxTimeObj);
+          }
         }
 
         __valueChanged(value, oldValue) {
