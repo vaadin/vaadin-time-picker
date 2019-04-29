@@ -235,12 +235,14 @@
           expect(textField).to.have.property('clearButtonVisible', true);
         });
 
-        it('clear button should be hidden when disabled', () => {
+        it('should not show clear button when disabled', () => {
+          timePicker.clearButtonVisible = true;
           timePicker.disabled = true;
           expect(getComputedStyle(clearButton).display).to.equal('none');
         });
 
-        it('clear button should be hidden when read-only', () => {
+        it('should not show clear button when read-only', () => {
+          timePicker.clearButtonVisible = true;
           timePicker.readonly = true;
           expect(getComputedStyle(clearButton).display).to.equal('none');
         });
