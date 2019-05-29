@@ -379,20 +379,10 @@ This program is available under Apache License Version 2.0, available at https:/
           this.__inputElement.addEventListener('keydown', this.__onKeyDown.bind(this));
 
           this.__dropdownElement.addEventListener('change', e => {
-            if (e.composedPath()[0] === this.__inputElement) {
-              if (e.detail.sourceEvent.__fromClearButton) {
-                // Clear button clicked. Delay change event until actual value change
-                this.__pendingChange = true;
-              } else {
-                // Focusout, change event should be already fired. Reset flag
-                this.__pendingChange = false;
-              }
-            } else if (this.__pendingChange) {
-              // Dropdown updated after clear button click. Reset flag
-              this.__pendingChange = false;
-            } else {
-              // Change event fired from dropdown. Forward it upwards
-              this.__dispatchChange();
+            // `vaadin-combo-box-light` forwards 'change' event from text-field.
+            // So we need to filter out in order to avoid duplicates.
+            if (e.composedPath()[0] !== this.__inputElement) {
+              this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
             }
           });
         }
@@ -567,13 +557,6 @@ This program is available under Apache License Version 2.0, available at https:/
         __updateInputValue(obj) {
           const timeString = this.i18n.formatTime(this.__validateTime(obj)) || '';
           this.__dropdownElement.value = timeString;
-          if (this.__pendingChange) {
-            this.__dispatchChange();
-          }
-        }
-
-        __dispatchChange() {
-          this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
         }
 
         __validateTime(timeObject) {
