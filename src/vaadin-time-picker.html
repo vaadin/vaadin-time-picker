@@ -377,6 +377,19 @@ This program is available under Apache License Version 2.0, available at https:/
           // thus querySelector in textField.focusElement raises an undefined exception on validate
           this.__dropdownElement.addEventListener('value-changed', e => this.__onInputChange(e));
           this.__inputElement.addEventListener('keydown', this.__onKeyDown.bind(this));
+
+          this.__dropdownElement.addEventListener('change', e => {
+            if (e.composedPath()[0] === this.__inputElement) {
+              // clear button clicked, delay change event
+              this.__changeFromInput = true;
+            } else if (this.__changeFromInput) {
+              // change event from clear button was fired
+              this.__changeFromInput = false;
+            } else {
+              // value changed in dropdown
+              this.__dispatchChange();
+            }
+          });
         }
 
         __validDayDivisor(step) {
@@ -549,6 +562,13 @@ This program is available under Apache License Version 2.0, available at https:/
         __updateInputValue(obj) {
           const timeString = this.i18n.formatTime(this.__validateTime(obj)) || '';
           this.__dropdownElement.value = timeString;
+          if (this.__changeFromInput) {
+            this.__dispatchChange();
+          }
+        }
+
+        __dispatchChange() {
+          this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
         }
 
         __validateTime(timeObject) {
