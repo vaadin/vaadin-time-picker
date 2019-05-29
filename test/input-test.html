@@ -334,6 +334,20 @@
           expect(spy.called).to.be.false;
         });
 
+        it('should not fire change on programmatic value change after manual one', () => {
+          timePicker.value = '00:00';
+          timePicker.__dropdownElement.opened = true;
+          input.inputElement.value = '';
+          arrowDown();
+          enter();
+          expect(spy).to.be.calledOnce;
+          // mimic native change happening on text-field blur
+          document.body.click();
+          input.inputElement.dispatchEvent(new Event('change', {bubbles: true}));
+          timePicker.value = '02:00';
+          expect(spy).to.be.calledOnce;
+        });
+
         it('should not fire change if the value was not changed', () => {
           timePicker.value = '01:00';
           timePicker.__dropdownElement.opened = true;
