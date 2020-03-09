@@ -19,9 +19,30 @@
       The <code>step</code> property specified in seconds affects the resolution of the time picker and visibility of the dropdown.
       If step is less than 15 mins dropdown is hidden
     </p>
-    <vaadin-demo-snippet id="time-picker-basic-demos-step-example">
+    <vaadin-demo-snippet id="time-picker-basic-demos-step-example" when-defined="vaadin-time-picker">
       <template preserve-content>
-        <vaadin-time-picker step="0.5" label="Duration (hh:mm:ss.fff)"></vaadin-time-picker>
+        <vaadin-combo-box id="combobox-step-selection" value="0.01" label="Step in minutes"></vaadin-combo-box>
+        <vaadin-time-picker id="time-picker-basic-demos-value-resolution" step="0.6" label="Duration (hh:mm:ss.fff)"></vaadin-time-picker>
+        <script>
+          window.addDemoReadyListener('#time-picker-basic-demos-step-example', function(document) {
+            const comboBox = document.querySelector('#combobox-step-selection');
+            const timePicker = document.querySelector('#time-picker-basic-demos-value-resolution');
+            comboBox.items = ['0.01', '0.5', '1', '15', '60', '120'];
+            comboBox.addEventListener('change', function(event) {
+              // Convert from minutes to seconds
+              timePicker.step = event.target.value * 60;
+              if (event.target.value == '0.01') {
+                // Less than a second
+                timePicker.label = 'Duration (hh:mm:ss.fff)';
+              } else if (event.target.value == '0.5') {
+                // Less than a minute
+                timePicker.label = 'Duration (hh:mm:ss)';
+              } else {
+                timePicker.label = 'Duration (hh:mm)';
+              }
+            });
+          });
+        </script>
       </template>
     </vaadin-demo-snippet>
 
