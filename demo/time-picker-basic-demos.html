@@ -37,7 +37,7 @@
               {value: String(60 * 60 * 2), label: '2 hours (hh:mm)'}
             ];
             comboBox.addEventListener('change', function(event) {
-              const step = parseInt(event.target.value);
+              const step = parseFloat(event.target.value);
               timePicker.step = step;
               if (step < 1) {
                 // Less than a second
