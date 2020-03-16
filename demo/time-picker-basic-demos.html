@@ -21,8 +21,8 @@
     </p>
     <vaadin-demo-snippet id="time-picker-basic-demos-step-example" when-defined="vaadin-time-picker">
       <template preserve-content>
-        <vaadin-combo-box id="combobox-step-selection" value="1" label="Step" style="width: 250px;"></vaadin-combo-box>
-        <vaadin-time-picker id="time-picker-basic-demos-value-resolution" step="1" label="Duration (hh:mm:ss.fff)"></vaadin-time-picker>
+        <vaadin-combo-box id="combobox-step-selection" value="1800" label="Step" style="width: 250px;"></vaadin-combo-box>
+        <vaadin-time-picker id="time-picker-basic-demos-value-resolution" value="12:00:00" step="1800" label="Duration (hh:mm)"></vaadin-time-picker>
         <script>
           window.addDemoReadyListener('#time-picker-basic-demos-step-example', function(document) {
             const comboBox = document.querySelector('#combobox-step-selection');
