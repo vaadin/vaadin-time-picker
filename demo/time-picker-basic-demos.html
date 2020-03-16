@@ -21,20 +21,28 @@
     </p>
     <vaadin-demo-snippet id="time-picker-basic-demos-step-example" when-defined="vaadin-time-picker">
       <template preserve-content>
-        <vaadin-combo-box id="combobox-step-selection" value="0.01" label="Step in minutes"></vaadin-combo-box>
-        <vaadin-time-picker id="time-picker-basic-demos-value-resolution" step="0.6" label="Duration (hh:mm:ss.fff)"></vaadin-time-picker>
+        <vaadin-combo-box id="combobox-step-selection" value="1" label="Step" style="width: 250px;"></vaadin-combo-box>
+        <vaadin-time-picker id="time-picker-basic-demos-value-resolution" step="1" label="Duration (hh:mm:ss.fff)"></vaadin-time-picker>
         <script>
           window.addDemoReadyListener('#time-picker-basic-demos-step-example', function(document) {
             const comboBox = document.querySelector('#combobox-step-selection');
             const timePicker = document.querySelector('#time-picker-basic-demos-value-resolution');
-            comboBox.items = ['0.01', '0.5', '1', '15', '60', '120'];
+            comboBox.items = [
+              {value: '0.5', label: '0.5 seconds (hh:mm:ss.fff)'},
+              {value: '1', label: '1 second (hh:mm:ss)'},
+              {value: '60', label: '1 minute (hh:mm)'},
+              {value: String(60 * 15), label: '15 minutes (hh:mm)'},
+              {value: String(60 * 30), label: '30 minutes (hh:mm)'},
+              {value: String(60 * 60), label: '1 hour (hh:mm)'},
+              {value: String(60 * 60 * 2), label: '2 hours (hh:mm)'}
+            ];
             comboBox.addEventListener('change', function(event) {
-              // Convert from minutes to seconds
-              timePicker.step = event.target.value * 60;
-              if (event.target.value == '0.01') {
+              const step = parseInt(event.target.value);
+              timePicker.step = step;
+              if (step < 1) {
                 // Less than a second
                 timePicker.label = 'Duration (hh:mm:ss.fff)';
-              } else if (event.target.value == '0.5') {
+              } else if (step < 60) {
                 // Less than a minute
                 timePicker.label = 'Duration (hh:mm:ss)';
               } else {
