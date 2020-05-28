@@ -6,7 +6,6 @@ This program is available under Apache License Version 2.0, available at https:/
 
 <link rel="import" href="../../polymer/polymer-element.html">
 <link rel="import" href="../../vaadin-themable-mixin/vaadin-themable-mixin.html">
-<link rel="import" href="../../vaadin-themable-mixin/vaadin-theme-property-mixin.html">
 <link rel="import" href="../../vaadin-element-mixin/vaadin-element-mixin.html">
 <link rel="import" href="../../vaadin-combo-box/src/vaadin-combo-box-light.html">
 <link rel="import" href="../../iron-a11y-keys-behavior/iron-a11y-keys-behavior.html">
@@ -122,14 +121,12 @@ This program is available under Apache License Version 2.0, available at https:/
        * @mixes Vaadin.ElementMixin
        * @mixes Vaadin.ControlStateMixin
        * @mixes Vaadin.ThemableMixin
-       * @mixes Vaadin.ThemePropertyMixin
        * @demo demo/index.html
        */
       class TimePickerElement extends
         Vaadin.ElementMixin(
           Vaadin.ControlStateMixin(
-            Vaadin.ThemableMixin(
-              Vaadin.ThemePropertyMixin(Polymer.Element)))) {
+            Vaadin.ThemableMixin(Polymer.Element))) {
 
         static get is() {
           return 'vaadin-time-picker';
@@ -172,6 +169,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
             /**
              * Set to true to mark the input as required.
+             * @type {boolean}
              */
             required: {
               type: Boolean,
@@ -180,6 +178,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
             /**
              * Set to true to disable this input.
+             * @type {boolean}
              */
             disabled: {
               type: Boolean,
@@ -188,6 +187,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
             /**
              * Set to true to prevent the user from entering invalid input.
+             * @type {boolean}
              */
             preventInvalidInput: {
               type: Boolean
@@ -217,6 +217,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
             /**
              * Set to true to prevent user picking a date or typing in the input.
+             * @type {boolean}
              */
             readonly: {
               type: Boolean,
@@ -226,6 +227,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
             /**
              * Set to true if the value is invalid.
+             * @type {boolean}
              */
             invalid: {
               type: Boolean,
@@ -282,6 +284,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
             /**
              * Set to true to display the clear icon which clears the input.
+             * @type {boolean}
              */
             clearButtonVisible: {
               type: Boolean,
@@ -290,6 +293,7 @@ This program is available under Apache License Version 2.0, available at https:/
 
             /**
              * Set true to prevent the overlay from opening automatically.
+             * @type {boolean}
              */
             autoOpenDisabled: Boolean,
 
@@ -326,6 +330,7 @@ This program is available under Apache License Version 2.0, available at https:/
                   // Translation of the time selector clear button title.
                   clear: 'Clear'
                 }
+              * @type {!TimePickerI18n}
               */
             i18n: {
               type: Object,
@@ -619,6 +624,7 @@ This program is available under Apache License Version 2.0, available at https:/
           return TimePickerElement.properties.i18n.value().parseTime(text);
         }
 
+        /** @private */
         _getInputElement() {
           return this.shadowRoot.querySelector('vaadin-time-picker-text-field');
         }
@@ -634,6 +640,8 @@ This program is available under Apache License Version 2.0, available at https:/
 
         /**
          * Focusable element used by vaadin-control-state-mixin
+         * @return {!HTMLElement}
+         * @protected
          */
         get focusElement() {
           return this.__inputElement;
@@ -648,6 +656,13 @@ This program is available under Apache License Version 2.0, available at https:/
           return !(this.invalid = !this.checkValidity());
         }
 
+        /**
+         * Returns true if `time` satisfies the `min` and `max` constraints (if any).
+         *
+         * @param {!TimePickerTime} time Value to check against constraints
+         * @return {boolean} True if `time` satisfies the constraints
+         * @protected
+         */
         _timeAllowed(time) {
           const parsedMin = this.i18n.parseTime(this.min);
           const parsedMax = this.i18n.parseTime(this.max);
@@ -660,6 +675,8 @@ This program is available under Apache License Version 2.0, available at https:/
          * Returns true if the current input value satisfies all constraints (if any)
          *
          * You can override the `checkValidity` method for custom validations.
+         *
+         * @return {boolean} True if the value is valid
          */
         checkValidity() {
           return this.__inputElement.focusElement.checkValidity() &&

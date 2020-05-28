@@ -9,3 +9,5 @@ bower.json
 gulpfile.js
 index.html
 screenshot.png
+gen-tsd.json
+magi-p3-post.js
