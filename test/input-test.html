@@ -17,6 +17,14 @@
     </template>
   </test-fixture>
 
+  <test-fixture id="time-picker-with-slotted-helper">
+    <template>
+      <vaadin-time-picker>
+        <div slot="helper">foo</div>
+      </vaadin-time-picker>
+    </template>
+  </test-fixture>
+
   <script>
     function changeInputValue(el, value) {
       el.value = value;
@@ -184,7 +192,7 @@
           });
         });
 
-        ['label', 'placeholder', 'pattern', 'errorMessage'].forEach(prop => {
+        ['label', 'placeholder', 'pattern', 'errorMessage', 'helperText'].forEach(prop => {
           it(`should propagate string property to text-field ${prop}`, () => {
             expect(timePicker.__inputElement[prop]).to.be.empty;
             timePicker[prop] = 'foo';
@@ -208,6 +216,13 @@
         it('should reflect to attribute when readonly property is set', () => {
           timePicker.readonly = true;
           expect(timePicker.hasAttribute('readonly')).to.be.true;
+        });
+
+        it('should display the helper text when slotted helper available', () => {
+          const timePicker = fixture(`time-picker-with-slotted-helper`);
+          const evt = new CustomEvent('slotchange');
+          timePicker.shadowRoot.querySelector('[name="helper"]').dispatchEvent(evt);
+          expect(timePicker.__inputElement.querySelector('[slot="helper"]').assignedNodes()[0].textContent).to.eql('foo');
         });
 
         describe('aria', () => {
