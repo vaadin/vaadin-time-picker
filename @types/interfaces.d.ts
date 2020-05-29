@@ -1,8 +1,8 @@
 export interface TimePickerTime {
-    hours: number;
-    minutes: number;
-    seconds: number;
-    milliseconds: number;
+  hours: string | number;
+  minutes: string | number;
+  seconds?: string | number;
+  milliseconds?: string | number;
 }
 
 export interface TimePickerI18n {
