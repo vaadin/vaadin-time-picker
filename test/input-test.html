@@ -26,6 +26,13 @@
   </test-fixture>
 
   <script>
+    const isSafari = (() => {
+      const uA = navigator.userAgent;
+      const vendor = navigator.vendor;
+      return /iPad|iPhone|iPod/.test(uA) ||
+        /Safari/i.test(uA) && /Apple Computer/.test(vendor) && !/Mobi|Android/i.test(uA);
+    })();
+
     function changeInputValue(el, value) {
       el.value = value;
       el.dispatchEvent(new CustomEvent('change'));
@@ -192,12 +199,19 @@
           });
         });
 
-        ['label', 'placeholder', 'pattern', 'errorMessage', 'helperText'].forEach(prop => {
+        ['label', 'placeholder', 'pattern', 'errorMessage'].forEach(prop => {
           it(`should propagate string property to text-field ${prop}`, () => {
             expect(timePicker.__inputElement[prop]).to.be.empty;
             timePicker[prop] = 'foo';
             expect(timePicker.__inputElement[prop]).to.be.equal('foo');
           });
+        });
+
+        // Skipped because of the issue with slots order occuring in https://failing-container.glitch.me.
+        (!isSafari ? it : it.skip)(`should propagate helperText property to text-field`, () => {
+          expect(timePicker.__inputElement.helperText).to.be.empty;
+          timePicker.helperText = 'foo';
+          expect(timePicker.__inputElement.helperText).to.be.equal('foo');
         });
 
         // they are used in both combo-box-mixin and text-field
