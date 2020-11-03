@@ -6,6 +6,15 @@ const config = {
   browserStartTimeout: 60000, // default 30000
   testsStartTimeout: 60000, // default 10000
   testsFinishTimeout: 60000, // default 20000
+  coverageConfig: {
+    include: ['**/src/*'],
+    threshold: {
+      statements: 100,
+      branches: 53,
+      functions: 100,
+      lines: 100
+    }
+  }
 };
 
 if (process.env.TEST_ENV === 'sauce') {
