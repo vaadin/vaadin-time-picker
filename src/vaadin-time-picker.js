@@ -723,6 +723,12 @@ class TimePickerElement extends ElementMixin(ControlStateMixin(ThemableMixin(Pol
       (!this.__dropdownElement.value || this.i18n.parseTime(this.__dropdownElement.value))
     );
   }
+
+  /**
+   * Fired when the user commits a value change.
+   *
+   * @event change
+   */
 }
 
 customElements.define(TimePickerElement.is, TimePickerElement);

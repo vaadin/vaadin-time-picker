@@ -230,6 +230,18 @@ declare class TimePickerElement extends ElementMixin(ControlStateMixin(ThemableM
    * @returns True if the value is valid
    */
   checkValidity(): boolean;
+
+  addEventListener<K extends keyof TimePickerEventMap>(
+    type: K,
+    listener: (this: TimePickerElement, ev: TimePickerEventMap[K]) => void,
+    options?: boolean | AddEventListenerOptions
+  ): void;
+
+  removeEventListener<K extends keyof TimePickerEventMap>(
+    type: K,
+    listener: (this: TimePickerElement, ev: TimePickerEventMap[K]) => void,
+    options?: boolean | EventListenerOptions
+  ): void;
 }
 
 declare global {
@@ -243,3 +255,21 @@ export { TimePickerElement };
 import { TimePickerI18n } from '../@types/interfaces';
 
 import { TimePickerTime } from '../@types/interfaces';
+
+export type TimePickerInvalidChanged = CustomEvent<{ value: boolean; path: 'invalid' }>;
+
+export type TimePickerValueChanged = CustomEvent<{ value: string; path: 'value' }>;
+
+export interface TimePickerElementEventMap {
+  /**
+   * Fired when the `invalid` property changes.
+   */
+  'invalid-changed': TimePickerInvalidChanged;
+
+  /**
+   * Fired when the `value` property changes.
+   */
+  'value-changed': TimePickerValueChanged;
+}
+
+export interface TimePickerEventMap extends HTMLElementEventMap, TimePickerElementEventMap {}
