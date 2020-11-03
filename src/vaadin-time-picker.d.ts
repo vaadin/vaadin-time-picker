@@ -73,7 +73,7 @@ declare class TimePickerElement extends
   ElementMixin(
   ControlStateMixin(
   ThemableMixin(
-  PolymerElement))) {
+  HTMLElement))) {
 
   /**
    * Focusable element used by vaadin-control-state-mixin
