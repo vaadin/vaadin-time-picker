@@ -3,8 +3,8 @@
 <head lang="en">
   <meta charset="UTF-8">
 
-  <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
-  <link href="../../vaadin-time-picker.html" rel="import">
+  <script src="../../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
+  <script type="module" src="../../vaadin-time-picker.js"></script>
 </head>
 
 <body style="height: 100vh;">
@@ -20,14 +20,15 @@
     <vaadin-time-picker step='900' id="step"></vaadin-time-picker>
   </div>
 
-  <script>
-    function closeTimePickers() {
-      var timePickers = document.querySelectorAll('vaadin-time-picker');
+  <script type="module">
+import '../../vaadin-time-picker.js';
+function closeTimePickers() {
+  var timePickers = document.querySelectorAll('vaadin-time-picker');
 
-      [].forEach.call(timePickers, function(timePicker) {
-        timePicker.__dropdownElement.opened = false;
-      });
-    }
-  </script>
+  [].forEach.call(timePickers, function(timePicker) {
+    timePicker.__dropdownElement.opened = false;
+  });
+}
+</script>
 
 </body>

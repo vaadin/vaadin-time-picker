@@ -1,6 +1,7 @@
-<link rel="import" href="../../../vaadin-text-field/theme/lumo/vaadin-text-field.html">
+import '@vaadin/vaadin-text-field/theme/lumo/vaadin-text-field.js';
+import { html } from '@polymer/polymer/lib/utils/html-tag.js';
 
-<dom-module id="lumo-time-picker-text-field" theme-for="vaadin-time-picker-text-field">
+const $_documentContainer = html`<dom-module id="lumo-time-picker-text-field" theme-for="vaadin-time-picker-text-field">
   <template>
     <style>
       :not(*):placeholder-shown, /* to prevent broken styles on IE */
@@ -15,4 +16,6 @@
       }
     </style>
   </template>
-</dom-module>
+</dom-module>`;
+
+document.head.appendChild($_documentContainer.content);
