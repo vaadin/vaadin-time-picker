@@ -36,9 +36,6 @@
     "@vaadin/vaadin-combo-box": "^5.4.0",
     "@vaadin/vaadin-control-state-mixin": "^2.2.2"
   },
-  "scripts": {
-    "generate-typings": "gen-typescript-declarations --outDir . --verify"
-  },
   "devDependencies": {
     "@polymer/iron-component-page": "^4.0.0",
     "@polymer/iron-test-helpers": "^3.0.0",
