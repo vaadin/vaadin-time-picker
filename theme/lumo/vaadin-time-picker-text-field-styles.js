@@ -16,4 +16,3 @@ registerStyles(
   `,
   { moduleId: 'lumo-time-picker-text-field' }
 );
-

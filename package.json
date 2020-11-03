@@ -27,11 +27,24 @@
   ],
   "scripts": {
     "debug": "web-test-runner test/*.test.js --watch",
+    "lint": "npm run lint:js",
+    "lint:js": "eslint src theme test",
     "screenshots": "hermione test/visual/test.js --update-refs",
     "start": "web-dev-server --node-resolve demo/index.html --open",
     "test": "web-test-runner test/*.test.js",
     "test:sauce": "TEST_ENV=sauce npm test",
     "test:visual": "hermione test/visual/test.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ]
   },
   "dependencies": {
     "@polymer/polymer": "^3.0.0",
@@ -52,9 +65,15 @@
     "@web/dev-server": "0.0.13",
     "@web/test-runner": "^0.9.2",
     "@web/test-runner-saucelabs": "^0.1.1",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^6.12.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "hermione": "^3.0.1",
     "hermione-esm": "^0.4.0",
     "hermione-sauce": "^0.1.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
+    "prettier": "^2.1.2",
     "sinon": "^9.2.0"
   }
 }

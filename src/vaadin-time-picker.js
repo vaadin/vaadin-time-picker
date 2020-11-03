@@ -64,40 +64,73 @@ import { ControlStateMixin } from '@vaadin/vaadin-control-state-mixin/vaadin-con
  * @mixes ThemableMixin
  * @demo demo/index.html
  */
-class TimePickerElement extends
-  ElementMixin(
-    ControlStateMixin(
-      ThemableMixin(PolymerElement))) {
+class TimePickerElement extends ElementMixin(ControlStateMixin(ThemableMixin(PolymerElement))) {
   static get template() {
     return html`
-    <style>
-      :host {
-        display: inline-block;
-      }
+      <style>
+        :host {
+          display: inline-block;
+        }
 
-      :host([hidden]) {
-        display: none !important;
-      }
+        :host([hidden]) {
+          display: none !important;
+        }
 
-      [part~="toggle-button"] {
-        cursor: pointer;
-      }
+        [part~='toggle-button'] {
+          cursor: pointer;
+        }
 
-      .input {
-        width: 100%;
-        min-width: 0;
-      }
-    </style>
-    <vaadin-combo-box-light allow-custom-value="" item-label-path="value" filtered-items="[[__dropdownItems]]" disabled="[[disabled]]" readonly="[[readonly]]" auto-open-disabled="[[autoOpenDisabled]]" dir="ltr" theme\$="[[theme]]">
-      <template>
-        [[item.label]]
-      </template>
-      <vaadin-time-picker-text-field class="input" name="[[name]]" invalid="[[invalid]]" autocomplete="off" label="[[label]]" required="[[required]]" disabled="[[disabled]]" prevent-invalid-input="[[preventInvalidInput]]" pattern="[[pattern]]" error-message="[[errorMessage]]" autofocus="[[autofocus]]" placeholder="[[placeholder]]" readonly="[[readonly]]" role="application" aria-live="assertive" min\$="[[min]]" max\$="[[max]]" aria-label\$="[[label]]" clear-button-visible="[[clearButtonVisible]]" i18n="[[i18n]]" helper-text="[[helperText]]" theme\$="[[theme]]">
-        <slot name="helper" slot="helper">[[helperText]]</slot>
-        <span slot="suffix" part="toggle-button" class="toggle-button" role="button" aria-label\$="[[i18n.selector]]"></span>
-      </vaadin-time-picker-text-field>
-    </vaadin-combo-box-light>
-`;
+        .input {
+          width: 100%;
+          min-width: 0;
+        }
+      </style>
+      <vaadin-combo-box-light
+        allow-custom-value=""
+        item-label-path="value"
+        filtered-items="[[__dropdownItems]]"
+        disabled="[[disabled]]"
+        readonly="[[readonly]]"
+        auto-open-disabled="[[autoOpenDisabled]]"
+        dir="ltr"
+        theme$="[[theme]]"
+      >
+        <template> [[item.label]] </template>
+        <vaadin-time-picker-text-field
+          class="input"
+          name="[[name]]"
+          invalid="[[invalid]]"
+          autocomplete="off"
+          label="[[label]]"
+          required="[[required]]"
+          disabled="[[disabled]]"
+          prevent-invalid-input="[[preventInvalidInput]]"
+          pattern="[[pattern]]"
+          error-message="[[errorMessage]]"
+          autofocus="[[autofocus]]"
+          placeholder="[[placeholder]]"
+          readonly="[[readonly]]"
+          role="application"
+          aria-live="assertive"
+          min$="[[min]]"
+          max$="[[max]]"
+          aria-label$="[[label]]"
+          clear-button-visible="[[clearButtonVisible]]"
+          i18n="[[i18n]]"
+          helper-text="[[helperText]]"
+          theme$="[[theme]]"
+        >
+          <slot name="helper" slot="helper">[[helperText]]</slot>
+          <span
+            slot="suffix"
+            part="toggle-button"
+            class="toggle-button"
+            role="button"
+            aria-label$="[[i18n.selector]]"
+          ></span>
+        </vaadin-time-picker-text-field>
+      </vaadin-combo-box-light>
+    `;
   }
 
   static get is() {
@@ -231,7 +264,7 @@ class TimePickerElement extends
        */
       min: {
         type: String,
-        value: '00:00:00.000',
+        value: '00:00:00.000'
       },
 
       /**
@@ -245,7 +278,7 @@ class TimePickerElement extends
        */
       max: {
         type: String,
-        value: '23:59:59.999',
+        value: '23:59:59.999'
       },
 
       /**
@@ -333,17 +366,19 @@ class TimePickerElement extends
               // Always display hour and minute
               let timeString = `${pad(time.hours)}:${pad(time.minutes)}`;
               // Adding second and millisecond depends on resolution
-              (time.seconds !== undefined) && (timeString += `:${pad(time.seconds)}`);
-              (time.milliseconds !== undefined) && (timeString += `.${pad(time.milliseconds, '000')}`);
+              time.seconds !== undefined && (timeString += `:${pad(time.seconds)}`);
+              time.milliseconds !== undefined && (timeString += `.${pad(time.milliseconds, '000')}`);
               return timeString;
             },
-            parseTime: text => {
+            parseTime: (text) => {
               // Parsing with RegExp to ensure correct format
               const MATCH_HOURS = '(\\d|[0-1]\\d|2[0-3])';
               const MATCH_MINUTES = '(\\d|[0-5]\\d)';
               const MATCH_SECONDS = MATCH_MINUTES;
               const MATCH_MILLISECONDS = '(\\d{1,3})';
-              const re = new RegExp(`^${MATCH_HOURS}(?::${MATCH_MINUTES}(?::${MATCH_SECONDS}(?:\\.${MATCH_MILLISECONDS})?)?)?$`);
+              const re = new RegExp(
+                `^${MATCH_HOURS}(?::${MATCH_MINUTES}(?::${MATCH_SECONDS}(?:\\.${MATCH_MILLISECONDS})?)?)?$`
+              );
               const parts = re.exec(text);
               if (parts) {
                 // Allows setting the milliseconds with hundreds and tens precision
@@ -352,7 +387,7 @@ class TimePickerElement extends
                     parts[4] += '0';
                   }
                 }
-                return {hours: parts[1], minutes: parts[2], seconds: parts[3], milliseconds: parts[4]};
+                return { hours: parts[1], minutes: parts[2], seconds: parts[3], milliseconds: parts[4] };
               }
             },
             selector: 'Time selector',
@@ -364,9 +399,7 @@ class TimePickerElement extends
   }
 
   static get observers() {
-    return [
-      '__updateDropdownItems(i18n.*, min, max, step)'
-    ];
+    return ['__updateDropdownItems(i18n.*, min, max, step)'];
   }
 
   /** @protected */
@@ -378,14 +411,14 @@ class TimePickerElement extends
 
     // Not using declarative because we receive an event before text-element shadow is ready,
     // thus querySelector in textField.focusElement raises an undefined exception on validate
-    this.__dropdownElement.addEventListener('value-changed', e => this.__onInputChange(e));
+    this.__dropdownElement.addEventListener('value-changed', (e) => this.__onInputChange(e));
     this.__inputElement.addEventListener('keydown', this.__onKeyDown.bind(this));
 
     // Validation listeners
-    this.__dropdownElement.addEventListener('change', e => this.validate());
-    this.__inputElement.addEventListener('blur', e => this.validate());
+    this.__dropdownElement.addEventListener('change', () => this.validate());
+    this.__inputElement.addEventListener('blur', () => this.validate());
 
-    this.__dropdownElement.addEventListener('change', e => {
+    this.__dropdownElement.addEventListener('change', (e) => {
       // `vaadin-combo-box-light` forwards 'change' event from text-field.
       // So we need to filter out in order to avoid duplicates.
       if (e.composedPath()[0] !== this.__inputElement) {
@@ -397,17 +430,16 @@ class TimePickerElement extends
   /** @private */
   __validDayDivisor(step) {
     // valid if undefined, or exact divides a day, or has millisecond resolution
-    return !step || 24 * 3600 % step === 0 || (step < 1 && step % 1 * 1000 % 1 === 0);
+    return !step || (24 * 3600) % step === 0 || (step < 1 && ((step % 1) * 1000) % 1 === 0);
   }
 
   /** @private */
   __onKeyDown(e) {
-
     if (this.readonly || this.disabled || this.__dropdownItems.length) {
       return;
     }
 
-    const stepResolution = this.__validDayDivisor(this.step) && this.step || 60;
+    const stepResolution = (this.__validDayDivisor(this.step) && this.step) || 60;
 
     if (IronA11yKeysBehavior.keyboardEventMatchesKeys(e, 'down')) {
       this.__onArrowPressWithStep(-stepResolution);
@@ -426,7 +458,7 @@ class TimePickerElement extends
 
   /** @private */
   __dispatchChange() {
-    this.dispatchEvent(new CustomEvent('change', {bubbles: true}));
+    this.dispatchEvent(new CustomEvent('change', { bubbles: true }));
   }
 
   /**
@@ -434,10 +466,10 @@ class TimePickerElement extends
    * @private
    */
   __getMsec(obj) {
-    let result = (obj && obj.hours || 0) * 60 * 60 * 1000;
-    result += (obj && obj.minutes || 0) * 60 * 1000;
-    result += (obj && obj.seconds || 0) * 1000;
-    result += (obj && parseInt(obj.milliseconds) || 0);
+    let result = ((obj && obj.hours) || 0) * 60 * 60 * 1000;
+    result += ((obj && obj.minutes) || 0) * 60 * 1000;
+    result += ((obj && obj.seconds) || 0) * 1000;
+    result += (obj && parseInt(obj.milliseconds)) || 0;
 
     return result;
   }
@@ -447,10 +479,10 @@ class TimePickerElement extends
    * @private
    */
   __getSec(obj) {
-    let result = (obj && obj.hours || 0) * 60 * 60;
-    result += (obj && obj.minutes || 0) * 60;
-    result += (obj && obj.seconds || 0);
-    result += (obj && obj.milliseconds / 1000 || 0);
+    let result = ((obj && obj.hours) || 0) * 60 * 60;
+    result += ((obj && obj.minutes) || 0) * 60;
+    result += (obj && obj.seconds) || 0;
+    result += (obj && obj.milliseconds / 1000) || 0;
 
     return result;
   }
@@ -484,7 +516,7 @@ class TimePickerElement extends
     var ss = Math.floor(msec / 1000);
     msec -= ss * 1000;
 
-    return {hours: (hh < 24) ? hh : 0, minutes: mm, seconds: ss, milliseconds: msec};
+    return { hours: hh < 24 ? hh : 0, minutes: mm, seconds: ss, milliseconds: msec };
   }
 
   /** @private */
@@ -526,7 +558,7 @@ class TimePickerElement extends
       const timeObj = this.__validateTime(this.__addStep(time * 1000, step));
       time += step;
       const formatted = this.i18n.formatTime(timeObj);
-      generatedList.push({label: formatted, value: formatted});
+      generatedList.push({ label: formatted, value: formatted });
     }
 
     return generatedList;
@@ -550,7 +582,7 @@ class TimePickerElement extends
 
   /** @private */
   __valueChanged(value, oldValue) {
-    const parsedObj = this.__memoValue = this.__parseISO(value);
+    const parsedObj = (this.__memoValue = this.__parseISO(value));
     const newValue = this.__formatISO(parsedObj) || '';
 
     if (this.value !== '' && this.value !== null && !parsedObj) {
@@ -563,7 +595,7 @@ class TimePickerElement extends
   }
 
   /** @private */
-  __onInputChange(e) {
+  __onInputChange() {
     const parsedObj = this.i18n.parseTime(this.__dropdownElement.value);
     const newValue = this.i18n.formatTime(parsedObj) || '';
 
@@ -616,6 +648,7 @@ class TimePickerElement extends
       // Accept milliseconds
       return 4;
     }
+    return undefined;
   }
 
   /** @private */
@@ -642,8 +675,7 @@ class TimePickerElement extends
 
   /** @private */
   get __dropdownElement() {
-    return this.__memoDropdown ||
-      (this.__memoDropdown = this.shadowRoot.querySelector('vaadin-combo-box-light'));
+    return this.__memoDropdown || (this.__memoDropdown = this.shadowRoot.querySelector('vaadin-combo-box-light'));
   }
 
   /**
@@ -675,8 +707,10 @@ class TimePickerElement extends
     const parsedMin = this.i18n.parseTime(this.min);
     const parsedMax = this.i18n.parseTime(this.max);
 
-    return (!this.__getMsec(parsedMin) || this.__getMsec(time) >= this.__getMsec(parsedMin)) &&
-      (!this.__getMsec(parsedMax) || this.__getMsec(time) <= this.__getMsec(parsedMax));
+    return (
+      (!this.__getMsec(parsedMin) || this.__getMsec(time) >= this.__getMsec(parsedMin)) &&
+      (!this.__getMsec(parsedMax) || this.__getMsec(time) <= this.__getMsec(parsedMax))
+    );
   }
 
   /**
@@ -687,9 +721,11 @@ class TimePickerElement extends
    * @return {boolean} True if the value is valid
    */
   checkValidity() {
-    return !!(this.__inputElement.focusElement.checkValidity() &&
+    return !!(
+      this.__inputElement.focusElement.checkValidity() &&
       (!this.value || this._timeAllowed(this.i18n.parseTime(this.value))) &&
-      (!this.__dropdownElement.value || this.i18n.parseTime(this.__dropdownElement.value)));
+      (!this.__dropdownElement.value || this.i18n.parseTime(this.__dropdownElement.value))
+    );
   }
 }
 
