@@ -1,37 +1,20 @@
-<!doctype html>
-
-<head>
-  <meta charset="UTF-8">
-  <title>vaadin-time-picker tests</title>
-  <script src="../../../wct-browser-legacy/browser.js"></script>
-  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
-  <script type="module" src="../src/vaadin-time-picker.js"></script>
-</head>
-
-<body>
-  <test-fixture id="default">
-    <template>
-      <vaadin-time-picker></vaadin-time-picker>
-    </template>
-  </test-fixture>
-
-  <script type="module">
-import '@polymer/test-fixture/test-fixture.js';
-import '../src/vaadin-time-picker.js';
+import { expect } from '@esm-bundle/chai';
+import { fixture, html } from '@open-wc/testing-helpers';
 import { ComboBoxLightElement } from '@vaadin/vaadin-combo-box/src/vaadin-combo-box-light.js';
-describe('dropdown test', () => {
+import '../vaadin-time-picker.js';
+
+describe('dropdown', () => {
   let timePicker;
 
-  beforeEach(() => {
-    timePicker = fixture('default');
+  beforeEach(async () => {
+    timePicker = await fixture(html`<vaadin-time-picker></vaadin-time-picker>`);
   });
 
   it('vaadin-combo-box-light should exist', () => {
     expect(timePicker.__dropdownElement instanceof ComboBoxLightElement).to.be.true;
   });
 
-  it('vaadin-combo-box-light should have a toogle element', () => {
+  it('vaadin-combo-box-light should have a toggle element', () => {
     expect(timePicker.__dropdownElement._toggleElement).to.not.be.null;
   });
 
@@ -39,7 +22,7 @@ describe('dropdown test', () => {
     expect(timePicker.__dropdownElement.filteredItems.length).to.be.equal(24);
     const pad = (num = 0, fmt = '00') => (fmt + num).substr((fmt + num).length - fmt.length);
     // With default step 1, value should be set to `hh:00`
-    for (var i = 0; i < 24; i ++) {
+    for (var i = 0; i < 24; i++) {
       const expected = pad(i) + ':00';
       expect(timePicker.__dropdownElement.filteredItems[i].label).to.be.equal(expected);
       expect(timePicker.__dropdownElement.filteredItems[i].value).to.be.equal(expected);
@@ -56,7 +39,7 @@ describe('dropdown test', () => {
     expect(timePicker.__dropdownElement.filteredItems).to.be.empty;
   });
 
-  it('undefined step divides dropdown on one hour increments', () => {
+  it('should divide dropdown on one hour increments if step is undefined', () => {
     timePicker.step = undefined;
     expect(timePicker.__dropdownElement.filteredItems.length).to.be.equal(24);
     expect(timePicker.__dropdownElement.filteredItems[0].label).to.be.equal('00:00');
@@ -88,7 +71,7 @@ describe('dropdown test', () => {
     expect(timePicker.__dropdownElement.filteredItems.length).to.be.equal(15);
   });
 
-  it('on step change the resolution should be changed, but selectedItem should remain the same', () => {
+  it('should change the resolution on step change, but selectedItem should remain the same', () => {
     timePicker.value = '01:00';
     expect(timePicker.value).to.be.equal('01:00');
     timePicker.step = 0.5;
@@ -104,5 +87,3 @@ describe('dropdown test', () => {
     expect(timePicker.__dropdownElement.autoOpenDisabled).to.be.true;
   });
 });
-</script>
-</body>

@@ -1,64 +1,57 @@
-<!doctype html>
+import { expect } from '@esm-bundle/chai';
+import sinon from 'sinon';
+import { aTimeout, fixture, html } from '@open-wc/testing-helpers';
+import { pressAndReleaseKeyOn } from '@polymer/iron-test-helpers/mock-interactions.js';
+import '../vaadin-time-picker.js';
 
-<head>
-  <meta charset="UTF-8">
-  <title>vaadin-time-picker tests</title>
-  <script src="../../../wct-browser-legacy/browser.js"></script>
-  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script src="../../../@polymer/iron-test-helpers/mock-interactions.js" type="module"></script>
-  <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
-  <script type="module" src="../src/vaadin-time-picker.js"></script>
-</head>
-
-<body>
-  <test-fixture id="default">
-    <template>
-      <vaadin-time-picker></vaadin-time-picker>
-    </template>
-  </test-fixture>
-
-  <script type="module">
-import '@polymer/test-fixture/test-fixture.js';
-import '../src/vaadin-time-picker.js';
-describe('keyboard navigation test', () => {
-  let timePicker;
+describe('keyboard navigation', () => {
+  let timePicker, dropdown, inputElement;
 
   function arrowUp() {
-    MockInteractions.pressAndReleaseKeyOn(getInput(), 38);
+    pressAndReleaseKeyOn(inputElement, 38);
   }
 
   function arrowDown() {
-    MockInteractions.pressAndReleaseKeyOn(getInput(), 40);
+    pressAndReleaseKeyOn(inputElement, 40);
   }
 
   function escape() {
-    MockInteractions.pressAndReleaseKeyOn(timePicker.__dropdownElement, 27);
+    pressAndReleaseKeyOn(dropdown, 27);
   }
 
-  function getInput() {
-    return timePicker.__inputElement;
-  }
+  beforeEach(async () => {
+    timePicker = await fixture(html`<vaadin-time-picker></vaadin-time-picker>`);
+    dropdown = timePicker.__dropdownElement;
+    inputElement = timePicker.__inputElement;
+  });
 
-  beforeEach(() => {
-    timePicker = fixture('default');
+  afterEach(async () => {
+    if (dropdown.opened) {
+      dropdown.opened = false;
+      await aTimeout(50);
+    }
   });
 
   describe('with invalid step', () => {
-    beforeEach(() => timePicker.step = 899);
+    beforeEach(() => {
+      timePicker.step = 899;
+    });
 
     it('should add one minute to input value on arrow up', () => {
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('00:01:00');
+      expect(inputElement.value).to.be.equal('00:01:00');
     });
 
-    it('should substract one minute from input value on arrow down', () => {
+    it('should subtract one minute from input value on arrow down', () => {
       arrowDown();
-      expect(timePicker.__inputElement.value).to.be.equal('23:59:00');
+      expect(inputElement.value).to.be.equal('23:59:00');
     });
   });
 
   describe('with step less than 15 mins', () => {
-    beforeEach(() => timePicker.step = 720);
+    beforeEach(() => {
+      timePicker.step = 720;
+    });
 
     it('should not change the value on arrow up', () => {
       timePicker.value = '00:00';
@@ -74,56 +67,56 @@ describe('keyboard navigation test', () => {
 
     it('on arrow up should update the input value to 00:12', () => {
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('00:12');
+      expect(inputElement.value).to.be.equal('00:12');
     });
 
     it('on arrow up should update the input value to 23:48', () => {
       arrowDown();
-      expect(timePicker.__inputElement.value).to.be.equal('23:48');
+      expect(inputElement.value).to.be.equal('23:48');
     });
 
     it('on arrow up/down should not change input value if readonly', () => {
       timePicker.readonly = true;
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('');
+      expect(inputElement.value).to.be.equal('');
       arrowDown();
-      expect(timePicker.__inputElement.value).to.be.equal('');
+      expect(inputElement.value).to.be.equal('');
     });
 
     it('on arrow up/down should not change input value if disabled', () => {
       timePicker.disabled = true;
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('');
+      expect(inputElement.value).to.be.equal('');
       arrowDown();
-      expect(timePicker.__inputElement.value).to.be.equal('');
+      expect(inputElement.value).to.be.equal('');
     });
 
-    it('should substract step value from the current input value on arrow down', () => {
+    it('should subtract step value from the current input value on arrow down', () => {
       timePicker.step = 1.5;
       timePicker.value = '23:55:55.500';
       arrowDown();
-      expect(timePicker.__inputElement.value).to.be.equal('23:55:54.000');
+      expect(inputElement.value).to.be.equal('23:55:54.000');
     });
 
     it('should add step value to the current input value on arrow up', () => {
       timePicker.step = 1.5;
       timePicker.value = '23:55:55.500';
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('23:55:57.000');
+      expect(inputElement.value).to.be.equal('23:55:57.000');
     });
 
     it('should change to the next even value on arrow up', () => {
       timePicker.value = '23:52';
       timePicker.step = 5 * 60;
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('23:55');
+      expect(inputElement.value).to.be.equal('23:55');
     });
 
     it('should change to the next even value on arrow down', () => {
       timePicker.value = '23:52';
       timePicker.step = 5 * 60;
       arrowDown();
-      expect(timePicker.__inputElement.value).to.be.equal('23:50');
+      expect(inputElement.value).to.be.equal('23:50');
     });
 
     it('should call __onArrowPressWithStep on arrow down/up', () => {
@@ -135,14 +128,14 @@ describe('keyboard navigation test', () => {
 
     describe('with custom parser and formatter', () => {
       beforeEach(() => {
-        timePicker.i18n.parseTime = text => {
+        timePicker.i18n.parseTime = (text) => {
           const parts = text.split('.');
           return {
             hours: parts[0],
             minutes: parts[1]
           };
         };
-        timePicker.i18n.formatTime = time => {
+        timePicker.i18n.formatTime = (time) => {
           return `${time.hours}.${time.minutes}`;
         };
       });
@@ -150,22 +143,22 @@ describe('keyboard navigation test', () => {
       it('should correctly add the step with custom parser and formatter', () => {
         timePicker.value = '12:0';
         timePicker.step = 20;
-        for (let inc = 1; inc < 4; inc ++) {
-          expect(timePicker.__inputElement.value).to.be.equal('12.0');
+        for (let inc = 1; inc < 4; inc++) {
+          expect(inputElement.value).to.be.equal('12.0');
           arrowUp();
         }
-        expect(timePicker.__inputElement.value).to.be.equal('12.1');
+        expect(inputElement.value).to.be.equal('12.1');
       });
 
-      it('should correctly substract the step with custom parser and formatter', () => {
+      it('should correctly subtract the step with custom parser and formatter', () => {
         timePicker.value = '12:0';
         timePicker.step = 20;
-        for (let inc = 1; inc < 4; inc ++) {
+        for (let inc = 1; inc < 4; inc++) {
           arrowDown();
-          expect(timePicker.__inputElement.value).to.be.equal('11.59');
+          expect(inputElement.value).to.be.equal('11.59');
         }
         arrowDown();
-        expect(timePicker.__inputElement.value).to.be.equal('11.58');
+        expect(inputElement.value).to.be.equal('11.58');
       });
     });
   });
@@ -173,8 +166,8 @@ describe('keyboard navigation test', () => {
   describe('with dropdown', () => {
     it('should not change the value on arrow up, but should open the overlay', () => {
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('');
-      expect(timePicker.__dropdownElement.opened).to.be.true;
+      expect(inputElement.value).to.be.equal('');
+      expect(dropdown.opened).to.be.true;
     });
   });
 
@@ -182,7 +175,7 @@ describe('keyboard navigation test', () => {
     beforeEach(() => {
       timePicker.step = 1800;
       timePicker.value = '02:00';
-      timePicker.__dropdownElement.opened = true;
+      dropdown.opened = true;
     });
 
     it('should not change the value on arrow up', () => {
@@ -212,21 +205,21 @@ describe('keyboard navigation test', () => {
     it('should change the value on millisecond resolution', () => {
       timePicker.step = 0.5;
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('00:00:00.500');
+      expect(inputElement.value).to.be.equal('00:00:00.500');
 
       timePicker.step = 0.1;
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('00:00:00.600');
+      expect(inputElement.value).to.be.equal('00:00:00.600');
     });
 
     it('should change by default value increments on microsecond resolution', () => {
       timePicker.step = 0.9999;
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('00:01:00.000');
+      expect(inputElement.value).to.be.equal('00:01:00.000');
 
       timePicker.step = 0.9991;
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('00:02:00.000');
+      expect(inputElement.value).to.be.equal('00:02:00.000');
     });
 
     it('should not open the overlay on arrow up', () => {
@@ -238,11 +231,9 @@ describe('keyboard navigation test', () => {
     it('should not change value on escape', () => {
       timePicker.step = 0.5;
       arrowUp();
-      expect(timePicker.__inputElement.value).to.be.equal('00:00:00.500');
+      expect(inputElement.value).to.be.equal('00:00:00.500');
       escape();
-      expect(timePicker.__inputElement.value).to.be.equal('');
+      expect(inputElement.value).to.be.equal('');
     });
   });
 });
-</script>
-</body>

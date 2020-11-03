@@ -1,29 +1,12 @@
-<!doctype html>
+import { expect } from '@esm-bundle/chai';
+import { fixture, html } from '@open-wc/testing-helpers';
+import '../vaadin-time-picker.js';
 
-<head>
-  <meta charset="UTF-8">
-  <title>vaadin-time-picker tests</title>
-  <script src="../../../wct-browser-legacy/browser.js"></script>
-  <script src="../../../@webcomponents/webcomponentsjs/webcomponents-bundle.js"></script>
-  <script type="module" src="../../../@polymer/test-fixture/test-fixture.js"></script>
-  <script type="module" src="../src/vaadin-time-picker.js"></script>
-</head>
-
-<body>
-  <test-fixture id="default">
-    <template>
-      <vaadin-time-picker></vaadin-time-picker>
-    </template>
-  </test-fixture>
-
-  <script type="module">
-import '@polymer/test-fixture/test-fixture.js';
-import '../src/vaadin-time-picker.js';
-describe('step test', () => {
+describe('step property', () => {
   let timePicker;
 
-  beforeEach(() => {
-    timePicker = fixture('default');
+  beforeEach(async () => {
+    timePicker = await fixture(html`<vaadin-time-picker></vaadin-time-picker>`);
   });
 
   it('step property should be undefined by default', () => {
@@ -90,7 +73,4 @@ describe('step test', () => {
     timePicker.value = '12:12:12.100';
     expect(timePicker.value).to.be.equal('12:12:12.100');
   });
-
 });
-</script>
-</body>
