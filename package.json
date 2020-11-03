@@ -52,7 +52,6 @@
   },
   "dependencies": {
     "@polymer/polymer": "^3.0.0",
-    "@polymer/iron-a11y-keys-behavior": "^3.0.0",
     "@vaadin/vaadin-themable-mixin": "^1.6.1",
     "@vaadin/vaadin-element-mixin": "^2.4.1",
     "@vaadin/vaadin-lumo-styles": "^1.6.0",

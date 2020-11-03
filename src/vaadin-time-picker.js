@@ -4,7 +4,6 @@
  * This program is available under Apache License Version 2.0, available at https://vaadin.com/license/
  */
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import { IronA11yKeysBehavior } from '@polymer/iron-a11y-keys-behavior/iron-a11y-keys-behavior.js';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
 import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.js';
 import { ControlStateMixin } from '@vaadin/vaadin-control-state-mixin/vaadin-control-state-mixin.js';
@@ -438,9 +437,9 @@ class TimePickerElement extends ElementMixin(ControlStateMixin(ThemableMixin(Pol
 
     const stepResolution = (this.__validDayDivisor(this.step) && this.step) || 60;
 
-    if (IronA11yKeysBehavior.keyboardEventMatchesKeys(e, 'down')) {
+    if (e.keyCode === 40) {
       this.__onArrowPressWithStep(-stepResolution);
-    } else if (IronA11yKeysBehavior.keyboardEventMatchesKeys(e, 'up')) {
+    } else if (e.keyCode === 38) {
       this.__onArrowPressWithStep(stepResolution);
     }
   }
