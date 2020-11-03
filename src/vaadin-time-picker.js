@@ -60,7 +60,6 @@ import './vaadin-time-picker-text-field.js';
  * @mixes ElementMixin
  * @mixes ControlStateMixin
  * @mixes ThemableMixin
- * @demo demo/index.html
  */
 class TimePickerElement extends ElementMixin(ControlStateMixin(ThemableMixin(PolymerElement))) {
   static get template() {
