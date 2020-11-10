@@ -41,8 +41,6 @@ registerStyles(
  * for `<vaadin-time-picker-text-field>` parts and available slots (prefix, suffix etc.)
  *
  * See [ThemableMixin – how to apply styles for shadow parts](https://github.com/vaadin/vaadin-themable-mixin/wiki)
- *
- * @extends PolymerElement
  */
 class TimePickerTextFieldElement extends TextFieldElement {
   static get is() {
