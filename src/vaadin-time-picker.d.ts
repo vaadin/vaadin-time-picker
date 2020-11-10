@@ -4,6 +4,8 @@ import { ElementMixin } from '@vaadin/vaadin-element-mixin/vaadin-element-mixin.
 
 import { ControlStateMixin } from '@vaadin/vaadin-control-state-mixin/vaadin-control-state-mixin.js';
 
+import { TimePickerEventMap, TimePickerI18n, TimePickerTime } from './interfaces';
+
 /**
  * `<vaadin-time-picker>` is a Web Component providing a time-selection field.
  *
@@ -204,8 +206,8 @@ declare class TimePickerElement extends ElementMixin(ControlStateMixin(ThemableM
    *           }
    */
   i18n: TimePickerI18n;
-  ready(): void;
-  _getInputElement(): any;
+
+  _getInputElement(): HTMLElement;
 
   /**
    * Returns true if `value` is valid, and sets the `invalid` flag appropriately.
@@ -251,25 +253,3 @@ declare global {
 }
 
 export { TimePickerElement };
-
-import { TimePickerI18n } from '../@types/interfaces';
-
-import { TimePickerTime } from '../@types/interfaces';
-
-export type TimePickerInvalidChanged = CustomEvent<{ value: boolean; path: 'invalid' }>;
-
-export type TimePickerValueChanged = CustomEvent<{ value: string; path: 'value' }>;
-
-export interface TimePickerElementEventMap {
-  /**
-   * Fired when the `invalid` property changes.
-   */
-  'invalid-changed': TimePickerInvalidChanged;
-
-  /**
-   * Fired when the `value` property changes.
-   */
-  'value-changed': TimePickerValueChanged;
-}
-
-export interface TimePickerEventMap extends HTMLElementEventMap, TimePickerElementEventMap {}

@@ -1,2 +1,2 @@
 export * from './src/vaadin-time-picker.js';
-export * from './@types/interfaces';
+export * from './src/interfaces';
