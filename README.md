@@ -10,13 +10,10 @@
 [API documentation ↗](https://cdn.vaadin.com/vaadin-time-picker/1.0.0)
 
 [![npm version](https://badgen.net/npm/v/@vaadin/vaadin-time-picker)](https://www.npmjs.com/package/@vaadin/vaadin-time-picker)
-[![Bower version](https://badgen.net/github/release/vaadin/vaadin-time-picker)](https://github.com/vaadin/vaadin-time-picker/releases)
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/vaadin/vaadin-time-picker)
-[![Build Status](https://travis-ci.org/vaadin/vaadin-time-picker.svg?branch=master)](https://travis-ci.org/vaadin/vaadin-time-picker)
-[![Coverage Status](https://coveralls.io/repos/github/vaadin/vaadin-time-picker/badge.svg?branch=master)](https://coveralls.io/github/vaadin/vaadin-time-picker?branch=master)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/vaadin/web-components?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 [![Published on Vaadin Directory](https://img.shields.io/badge/Vaadin%20Directory-published-00b4f0.svg)](https://vaadin.com/directory/component/vaadinvaadin-time-picker)
-[![Stars on vaadin.com/directory](https://img.shields.io/vaadin-directory/star/vaadin-time-picker-directory-urlidentifier.svg)](https://vaadin.com/directory/component/vaadinvaadin-time-picker)
+[![Discord](https://discordapp.com/api/guilds/732335336448852018/widget.png)](https://vaad.in/chat)
+
 <!--
 ```
 <custom-element-demo>
