@@ -8,6 +8,7 @@
 
   <link rel="import" href="../../iron-form/iron-form.html">
   <link rel="import" href="../vaadin-time-picker.html">
+  <script src="common.js"></script>
 </head>
 
 <body>
@@ -149,6 +150,40 @@
         expect(timepicker.validate()).to.equal(true);
       });
 
+      describe('initial validation', () => {
+        let validateSpy;
+        let timePicker;
+
+        beforeEach(() => {
+          timePicker = document.createElement('vaadin-time-picker');
+          validateSpy = sinon.spy(timePicker, 'validate');
+        });
+
+        afterEach(() => {
+          timePicker.remove();
+        });
+
+        it('should not validate by default', async() => {
+          document.body.appendChild(timePicker);
+          await nextRender();
+          expect(validateSpy.called).to.be.false;
+        });
+
+        it('should not validate when the field has an initial value', async() => {
+          timePicker.value = '12:00';
+          document.body.appendChild(timePicker);
+          await nextRender();
+          expect(validateSpy.called).to.be.false;
+        });
+
+        it('should not validate when the field has an initial value and invalid', async() => {
+          timePicker.value = '12:00';
+          timePicker.invalid = true;
+          document.body.appendChild(timePicker);
+          await nextRender();
+          expect(validateSpy.called).to.be.false;
+        });
+      });
       describe('custom validator', () => {
 
         beforeEach(() => timepicker = fixture('custom-validation'));
