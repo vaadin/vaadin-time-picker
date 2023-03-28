@@ -13,8 +13,6 @@ function fixtureWrapper(parentNode = document.createElement('div')) {
   return parentNode;
 }
 
-// # sourceMappingURL=fixture-wrapper.js.map
-
 /**
  * Creates a `<template>` element from a provided string template.
  *
@@ -45,4 +43,3 @@ function fixtureSync(html, wrapper) {
   parentNode.appendChild(document.importNode(tpl.content, true));
   return parentNode.firstElementChild;
 }
-// # sourceMappingURL=fixture-no-side-effect.js.map
