@@ -1,0 +1,48 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-time-picker validation tests</title>
+  <script src='../../web-component-tester/browser.js'></script>
+  <script src='../../webcomponentsjs/webcomponents-lite.js'></script>
+  <link rel="import" href="../src/vaadin-time-picker.html">
+  <link rel="import" href="helpers.html">
+</head>
+
+<body>
+  <script>
+  describe('initial validation', () => {
+    let timePicker, validateSpy;
+
+    beforeEach(() => {
+      timePicker = document.createElement('vaadin-time-picker');
+      validateSpy = sinon.spy(timePicker, 'validate');
+    });
+
+    afterEach(() => {
+      timePicker.remove();
+    });
+
+    it('should not validate by default', async() => {
+      document.body.appendChild(timePicker);
+      await nextRender();
+      expect(validateSpy.called).to.be.false;
+    });
+
+    it('should not validate when the field has an initial value', async() => {
+      timePicker.value = '12:00';
+      document.body.appendChild(timePicker);
+      await nextRender();
+      expect(validateSpy.called).to.be.false;
+    });
+
+    it('should not validate when the field has an initial value and invalid', async() => {
+      timePicker.value = '12:00';
+      timePicker.invalid = true;
+      document.body.appendChild(timePicker);
+      await nextRender();
+      expect(validateSpy.called).to.be.false;
+    });
+  });
+  </script>
+</body>

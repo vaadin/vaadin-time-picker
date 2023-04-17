@@ -6,5 +6,6 @@ window.TimePickerElementSuites = [
   'form-input.html',
   'keyboard-navigation.html',
   'styling.html',
-  'range-test.html'
+  'range-test.html',
+  'validation.html'
 ];
