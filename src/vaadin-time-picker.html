@@ -686,9 +686,9 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         /**
-         * Returns true if `value` is valid, and sets the `invalid` flag appropriately.
+         * Validates the field and sets the `invalid` property based on the result.
          *
-         * @return {boolean} True if the value is valid and sets the `invalid` flag appropriately
+         * The method fires a `validated` event with the result of the validation.
          */
         validate() {
           const isValid = this.checkValidity();
