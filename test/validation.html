@@ -78,5 +78,23 @@
       expect(event.detail.valid).to.be.false;
     });
   });
+  describe('invalid cannot be set to false', () => {
+    let timePicker;
+
+    beforeEach(async() => {
+      timePicker = fixture('time-picker');
+      timePicker._shouldSetInvalid = (invalid) => invalid;
+      await nextRender();
+    });
+
+    it('should set invalid only when it is true', async() => {
+      timePicker.required = true;
+      timePicker.validate();
+      expect(timePicker.invalid).to.be.true;
+      timePicker.value = '13:00';
+      timePicker.validate();
+      expect(timePicker.invalid).to.be.true;
+    });
+  });
   </script>
 </body>
