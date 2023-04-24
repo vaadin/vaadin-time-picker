@@ -1,0 +1,55 @@
+<!doctype html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>vaadin-time-picker events tests</title>
+  <script src='../../web-component-tester/browser.js'></script>
+  <script src='../../webcomponentsjs/webcomponents-lite.js'></script>
+  <link rel="import" href="../src/vaadin-time-picker.html">
+  <link rel="import" href="../../test-fixture/test-fixture.html">
+</head>
+
+<body>
+  <test-fixture id="time-picker">
+    <template>
+      <vaadin-time-picker></vaadin-time-picker>
+    </template>
+  </test-fixture>
+  <script>
+    describe('events', () => {
+      let timePicker, input;
+    
+      describe('has-input-value-changed event', () => {
+        beforeEach(async() => {
+          timePicker = fixture('time-picker');
+          input = timePicker.__inputElement;
+        });
+    
+        it('should fire the event on input value presence change', async() => {
+          const hasInputValueChangedSpy = sinon.spy();
+          timePicker.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
+          input.value = '13:00';
+          input.dispatchEvent(new CustomEvent('input'));
+          expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+    
+          hasInputValueChangedSpy.reset();
+          input.value = '';
+          input.dispatchEvent(new CustomEvent('input'));
+          expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+        });
+    
+        it('should not fire the event on input if input value presence has not changed', async() => {
+          const hasInputValueChangedSpy = sinon.spy();
+          timePicker.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
+          input.value = '13:00';
+          input.dispatchEvent(new CustomEvent('input'));
+          hasInputValueChangedSpy.reset();
+    
+          input.value = '13:58';
+          input.dispatchEvent(new CustomEvent('input'));
+          expect(hasInputValueChangedSpy.called).to.be.false;
+        });
+      });
+    });
+  </script>
+</body>
