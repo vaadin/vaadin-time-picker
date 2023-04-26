@@ -436,6 +436,39 @@ This program is available under Apache License Version 2.0, available at https:/
         }
 
         /**
+         * A property for accessing the input element's value.
+         *
+         * Override this getter if the property is different from the default `value` one.
+         *
+         * @protected
+         * @return {string}
+         */
+        get _inputElementValueProperty() {
+          return 'value';
+        }
+
+        /**
+         * The input element's value.
+         *
+         * @protected
+         * @return {string}
+         */
+        get _inputElementValue() {
+          return this.__inputElement ? this.__inputElement[this._inputElementValueProperty] : undefined;
+        }
+
+        /**
+         * The input element's value.
+         *
+         * @protected
+         */
+        set _inputElementValue(value) {
+          if (this.__inputElement) {
+            this.__inputElement[this._inputElementValueProperty] = value;
+          }
+        }
+
+        /**
          * Sets the `_hasInputValue` property based on the `input` event.
          *
          * @param {InputEvent} event
@@ -493,7 +526,7 @@ This program is available under Apache License Version 2.0, available at https:/
         __onArrowPressWithStep(step) {
           const objWithStep = this.__addStep(this.__getMsec(this.__memoValue), step, true);
           this.__memoValue = objWithStep;
-          this.__inputElement.value = this.i18n.formatTime(this.__validateTime(objWithStep));
+          this._inputElementValue = this.i18n.formatTime(this.__validateTime(objWithStep));
           this.__dispatchChange();
         }
 
