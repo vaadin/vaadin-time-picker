@@ -39,7 +39,8 @@ This program is available under Apache License Version 2.0, available at https:/
         readonly="[[readonly]]"
         auto-open-disabled="[[autoOpenDisabled]]"
         dir="ltr"
-        theme$="[[theme]]">
+        theme$="[[theme]]"
+        on-has-input-value-changed="__onComboBoxHasInputValueChanged">
       <template>
         [[item.label]]
       </template>
@@ -728,6 +729,16 @@ This program is available under Apache License Version 2.0, available at https:/
           return this.__inputElement;
         }
 
+        /**
+          * Synchronizes the `_hasInputValue` property with the internal combo-box's one.
+          *
+          * @private
+          */
+        __onComboBoxHasInputValueChanged() {
+          this._hasInputValue = this.__dropdownElement._hasInputValue;
+        }
+
+    
         /**
          * @param {boolean} invalid
          * @protected

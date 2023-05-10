@@ -7,6 +7,7 @@
   <script src='../../webcomponentsjs/webcomponents-lite.js'></script>
   <link rel="import" href="../src/vaadin-time-picker.html">
   <link rel="import" href="../../test-fixture/test-fixture.html">
+  <script src="../../iron-test-helpers/mock-interactions.js"></script>
 </head>
 
 <body>
@@ -17,37 +18,111 @@
   </test-fixture>
   <script>
     describe('events', () => {
-      let timePicker, input;
+      function inputChar(target, char) {
+        target.value += char;
+        MockInteractions.keyDownOn(target, char.charCodeAt(0));
+        target.dispatchEvent(new CustomEvent('input', {bubbles: true, composed: true}));
+      }
+    
+      function inputText(target, text) {
+        for (var i = 0; i < text.length; i++) {
+          inputChar(target, text[i]);
+        }
+      }
+    
+      function arrowDown(target) {
+        MockInteractions.keyDownOn(target, 40);
+      }
+    
+      function enter(target) {
+        MockInteractions.pressEnter(target);
+      }
+    
+      function space(target) {
+        MockInteractions.pressSpace(target);
+      }
+    
+      function esc(target) {
+        MockInteractions.keyDownOn(target, 27, null, 'Escape');
+      }
     
       describe('has-input-value-changed event', () => {
+        let input, timePicker, clearButton, hasInputValueChangedSpy, valueChangedSpy;
+    
         beforeEach(async() => {
+          hasInputValueChangedSpy = sinon.spy();
+          valueChangedSpy = sinon.spy();
           timePicker = fixture('time-picker');
           input = timePicker.__inputElement;
+          clearButton = input.shadowRoot.querySelector('[part=clear-button]');
+          timePicker.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
+          timePicker.addEventListener('value-changed', valueChangedSpy);
         });
     
-        it('should fire the event on input value presence change', async() => {
-          const hasInputValueChangedSpy = sinon.spy();
-          timePicker.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
-          input.value = '13:00';
-          input.dispatchEvent(new CustomEvent('input'));
-          expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+        describe('without value', () => {
+          it('should be fired when entering user input', async() => {
+            inputText(input, '12:00');
+            expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+          });
+          describe('with user input', () => {
+            beforeEach(async() => {
+              inputText(input, '12:00');
+              hasInputValueChangedSpy.reset();
+            });
     
-          hasInputValueChangedSpy.reset();
-          input.value = '';
-          input.dispatchEvent(new CustomEvent('input'));
-          expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+            it('should be fired when clearing the user input with Esc', async() => {
+              // Clear selection in the dropdown.
+              esc(input);
+              // Clear the user input.
+              esc(input);
+              expect(input.value).to.be.empty;
+              expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+            });
+          });
+
+          describe('with bad user input', async() => {
+            beforeEach(async() => {
+              inputText(input, 'foo');
+              hasInputValueChangedSpy.reset();
+            });
+    
+            it('should be fired when clearing bad user input with Esc', async() => {
+              esc(input);
+              expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+            });
+    
+            it('should be fired when clearing committed bad user input with Esc', async() => {
+              enter(input);
+              hasInputValueChangedSpy.reset();
+              esc(input);
+              expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+            });
+          });
         });
     
-        it('should not fire the event on input if input value presence has not changed', async() => {
-          const hasInputValueChangedSpy = sinon.spy();
-          timePicker.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
-          input.value = '13:00';
-          input.dispatchEvent(new CustomEvent('input'));
-          hasInputValueChangedSpy.reset();
+        describe('with value', () => {
+          beforeEach(async() => {
+            inputText(input, '10:00');
+            enter(input);
+            valueChangedSpy.reset();
+            hasInputValueChangedSpy.reset();
+          });
+
+          it('should be fired on clear button click', () => {
+            clearButton.click();
+            expect(input.value).to.be.empty;
+            expect(valueChangedSpy.calledOnce).to.be.true;
+            expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+            expect(hasInputValueChangedSpy.calledBefore(valueChangedSpy)).to.be.true;
+          });
     
-          input.value = '13:58';
-          input.dispatchEvent(new CustomEvent('input'));
-          expect(hasInputValueChangedSpy.called).to.be.false;
+          it('should be fired when clearing the value with Esc', async() => {
+            esc(input);
+            expect(input.value).to.be.empty;
+            expect(valueChangedSpy.calledOnce).to.be.true;
+            expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+            expect(hasInputValueChangedSpy.calledBefore(valueChangedSpy)).to.be.true;
+          });
         });
       });
     });
