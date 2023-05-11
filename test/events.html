@@ -53,8 +53,8 @@
           hasInputValueChangedSpy = sinon.spy();
           valueChangedSpy = sinon.spy();
           timePicker = fixture('time-picker');
-          input = timePicker.__inputElement;
-          clearButton = input.shadowRoot.querySelector('[part=clear-button]');
+          input = timePicker.__inputElement.inputElement;
+          clearButton = timePicker.__inputElement.shadowRoot.querySelector('[part=clear-button]');
           timePicker.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
           timePicker.addEventListener('value-changed', valueChangedSpy);
         });
@@ -102,6 +102,7 @@
     
         describe('with value', () => {
           beforeEach(async() => {
+            timePicker.clearButtonVisible = true;
             inputText(input, '10:00');
             enter(input);
             valueChangedSpy.reset();
@@ -109,7 +110,10 @@
           });
 
           it('should be fired on clear button click', () => {
+            expect(timePicker.value).to.equal('10:00');
             clearButton.click();
+            expect(timePicker.value).to.equal('');
+            expect(timePicker.__dropdownElement.value).to.equal('');
             expect(input.value).to.be.empty;
             expect(valueChangedSpy.calledOnce).to.be.true;
             expect(hasInputValueChangedSpy.calledOnce).to.be.true;
