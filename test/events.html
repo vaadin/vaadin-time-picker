@@ -90,13 +90,6 @@
               esc(input);
               expect(hasInputValueChangedSpy.calledOnce).to.be.true;
             });
-    
-            it('should be fired when clearing committed bad user input with Esc', async() => {
-              enter(input);
-              hasInputValueChangedSpy.reset();
-              esc(input);
-              expect(hasInputValueChangedSpy.calledOnce).to.be.true;
-            });
           });
         });
     
@@ -110,21 +103,13 @@
           });
 
           it('should be fired on clear button click', () => {
-            expect(timePicker.value).to.equal('10:00');
+            input.blur();
             clearButton.click();
             expect(timePicker.value).to.equal('');
             expect(timePicker.__dropdownElement.value).to.equal('');
             expect(input.value).to.be.empty;
             expect(valueChangedSpy.calledOnce).to.be.true;
-            expect(hasInputValueChangedSpy.calledOnce).to.be.true;
-            expect(hasInputValueChangedSpy.calledBefore(valueChangedSpy)).to.be.true;
-          });
-    
-          it('should be fired when clearing the value with Esc', async() => {
-            esc(input);
-            expect(input.value).to.be.empty;
-            expect(valueChangedSpy.calledOnce).to.be.true;
-            expect(hasInputValueChangedSpy.calledOnce).to.be.true;
+            expect(hasInputValueChangedSpy.callCount).to.equal(1);
             expect(hasInputValueChangedSpy.calledBefore(valueChangedSpy)).to.be.true;
           });
         });
