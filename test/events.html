@@ -23,32 +23,32 @@
         MockInteractions.keyDownOn(target, char.charCodeAt(0));
         target.dispatchEvent(new CustomEvent('input', {bubbles: true, composed: true}));
       }
-    
+
       function inputText(target, text) {
         for (var i = 0; i < text.length; i++) {
           inputChar(target, text[i]);
         }
       }
-    
+
       function arrowDown(target) {
         MockInteractions.keyDownOn(target, 40);
       }
-    
+
       function enter(target) {
         MockInteractions.pressEnter(target);
       }
-    
+
       function space(target) {
         MockInteractions.pressSpace(target);
       }
-    
+
       function esc(target) {
         MockInteractions.keyDownOn(target, 27, null, 'Escape');
       }
-    
+
       describe('has-input-value-changed event', () => {
         let input, timePicker, clearButton, hasInputValueChangedSpy, valueChangedSpy;
-    
+
         beforeEach(async() => {
           hasInputValueChangedSpy = sinon.spy();
           valueChangedSpy = sinon.spy();
@@ -58,7 +58,7 @@
           timePicker.addEventListener('has-input-value-changed', hasInputValueChangedSpy);
           timePicker.addEventListener('value-changed', valueChangedSpy);
         });
-    
+
         describe('without value', () => {
           it('should be fired when entering user input', async() => {
             inputText(input, '12:00');
@@ -70,7 +70,7 @@
               inputText(input, '12:00');
               hasInputValueChangedSpy.reset();
             });
-    
+
             it('should be fired when clearing the user input with Esc', async() => {
               // Clear selection in the dropdown.
               esc(input);
@@ -86,14 +86,14 @@
               inputText(input, 'foo');
               hasInputValueChangedSpy.reset();
             });
-    
+
             it('should be fired when clearing bad user input with Esc', async() => {
               esc(input);
               expect(hasInputValueChangedSpy.calledOnce).to.be.true;
             });
           });
         });
-    
+
         describe('with value', () => {
           beforeEach(async() => {
             timePicker.clearButtonVisible = true;
@@ -104,11 +104,9 @@
           });
 
           it('should be fired on clear button click', () => {
-            input.blur();
-            clearButton.click();
-            expect(timePicker.value).to.equal('');
-            expect(timePicker.__dropdownElement.value).to.equal('');
+            clearButton.dispatchEvent(new CustomEvent('click', {bubbles: true, composed: true}));
             expect(input.value).to.be.empty;
+            expect(timePicker.value).to.be.empty;
             expect(valueChangedSpy.calledOnce).to.be.true;
             expect(hasInputValueChangedSpy.callCount).to.equal(1);
             expect(hasInputValueChangedSpy.calledBefore(valueChangedSpy)).to.be.true;
