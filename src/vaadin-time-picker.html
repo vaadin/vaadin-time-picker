@@ -39,7 +39,8 @@ This program is available under Apache License Version 2.0, available at https:/
         readonly="[[readonly]]"
         auto-open-disabled="[[autoOpenDisabled]]"
         dir="ltr"
-        theme$="[[theme]]">
+        theme$="[[theme]]"
+        on-has-input-value-changed="__onComboBoxHasInputValueChanged">
       <template>
         [[item.label]]
       </template>
@@ -420,7 +421,6 @@ This program is available under Apache License Version 2.0, available at https:/
           // thus querySelector in textField.focusElement raises an undefined exception on validate
           this.__dropdownElement.addEventListener('value-changed', e => this.__onInputChange(e));
           this.__inputElement.addEventListener('keydown', this.__onKeyDown.bind(this));
-          this.__inputElement.addEventListener('input', this.__onInput.bind(this));
 
           // Validation listeners
           this.__dropdownElement.addEventListener('change', e => this.validate());
@@ -433,27 +433,6 @@ This program is available under Apache License Version 2.0, available at https:/
               this.__dispatchChange();
             }
           });
-        }
-
-        /**
-         * Sets the `_hasInputValue` property based on the `input` event.
-         *
-         * @param {InputEvent} event
-         * @protected
-         */
-        _setHasInputValue(event) {
-          this._hasInputValue = event.target.value.length > 0;
-        }
-
-        /**
-         * An input event listener used to update `_hasInputValue` property.
-         * Do not override this method.
-         *
-         * @param {Event} event
-         * @private
-         */
-        __onInput(event) {
-          this._setHasInputValue(event);
         }
 
         /**
@@ -726,6 +705,15 @@ This program is available under Apache License Version 2.0, available at https:/
          */
         get focusElement() {
           return this.__inputElement;
+        }
+
+        /**
+         * Synchronizes the `_hasInputValue` property with the internal combo-box's one.
+         *
+         * @private
+         */
+        __onComboBoxHasInputValueChanged() {
+          this._hasInputValue = this.__dropdownElement._hasInputValue;
         }
 
         /**
